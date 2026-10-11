@@ -34,6 +34,7 @@ export type Actor = {
   primaryPlatform?: boolean;
   supportSessionId?: string;
   portalGrantId?: string;
+  portalStudentId?: string;
   organizationId?: string;
 };
 export class ApiError extends Error {
@@ -310,8 +311,11 @@ export async function accessStudent(
 ) {
   await own(actor, "students", studentId);
   permit(actor, "students.view");
+  if (actor.portalStudentId && actor.portalStudentId !== studentId)
+    throw new ApiError(404, "NOT_FOUND", "Student not found.");
   if (
     actor.portalGrantId &&
+    !actor.portalStudentId &&
     !(await one(
       "SELECT id FROM student_parents WHERE institution_id=? AND student_id=? AND parent_id=?",
       [actor.institutionId, studentId, actor.parentId],

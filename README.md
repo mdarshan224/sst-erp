@@ -17,7 +17,7 @@ The canonical portal is **https://erp.sohansoft.in**. Registered administrators 
 
 All institution API calls can use `/api/campus/:slug/<existing-endpoint>`. The server resolves the slug to the tenant and rejects a conflicting tenant header. Legacy fee endpoints require an explicit `X-Institution-ID` and apply the same authorization. `/api/session` returns platform access and staff memberships; `/api/platform/*` requires a separate platform-admin grant. `/api/portal/:slug` exposes only public branding. `/api/openapi` documents the APIs.
 
-The new advanced phase adds expiring signed guardian access at `/portal/:token`, without parent passwords or accounts. Staff issue and revoke links from a student profile. Trust reports are at `/organization/:id`; platform organization management is at `/admin/organizations`. Legacy parent-account routes remain retired. See [advanced workflows](docs/advanced-phase.md) for setup, new APIs, migration, provider contracts and limitations.
+The new advanced phase adds expiring signed guardian access at `/portal/:token`, without parent passwords or accounts. Staff issue and revoke links from a student profile. Trust reports are at `/organization/:id`; platform organization management is at `/admin/organizations`. Legacy parent-account API routes remain retired; the new independent credential entry point is `/student-portal` (see [portal workflow](docs/student-parent-portal.md)). See [advanced workflows](docs/advanced-phase.md) for setup, new APIs, migration, provider contracts and limitations.
 
 ## Institution onboarding and staff
 
@@ -99,3 +99,7 @@ Validation: `pnpm test:refactor` adds fee-rule, UPI, cash-count, CSV, role-ceili
 ## Advanced workflows (3.0)
 
 See [docs/advanced-phase.md](docs/advanced-phase.md) for signed parent checkout, approved tax documents, DLT/WhatsApp/Queue delivery, trust reports, immutable academic rollover, RFID attendance charges, Tally vouchers and OFX/CSV bank reconciliation. Migration 0007 extends the existing schema; all monetary mutations retain authoritative server calculations and immutable journal evidence. `pnpm test:advanced` runs the new unit and isolated Worker/Queue integration checks. The current managed deployment uses the existing scheduler and durable background fallback until native Queue/Cron provisioning is available.
+
+### Student & Parent Portal
+
+The existing ERP now includes `/student-portal`, staff account/content controls on each student profile, and migration `0016_reflective_blindfold.sql`. See [setup, migration and configuration](docs/student-parent-portal.md). Run `pnpm test:portal` after building.

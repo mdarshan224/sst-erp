@@ -14,7 +14,7 @@ export function campusHref(basePath: string, href: string): string {
   if (
     !href.startsWith("/") ||
     href.startsWith("//") ||
-    /^\/(api|admin|campus|organization|portal|exam-verification|auth|signin-with-chatgpt|signout-with-chatgpt|features|communication|pricing|about|contact|policies|solutions|benefits|implementation|faq)(\/|\?|#|$)/.test(
+    /^\/(api|admin|campus|organization|portal|exam-verification|auth|signin-with-chatgpt|signout-with-chatgpt|features|communication|pricing|about|contact|policies|solutions|benefits|implementation|faq|student-portal)(\/|\?|#|$)/.test(
       href,
     )
   )

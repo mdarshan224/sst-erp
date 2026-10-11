@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
       disallow: [
-        "/admin",
+        "/admin", "/student-portal",
         "/campus",
         "/api/",
         "/portal",

@@ -40,6 +40,7 @@ export async function readBody(request: Request): Promise<Row> {
 export function routeArea(path: string[]) {
   const areas: Record<string, string> = {
     students: "students",
+    "portal-staff": "students",
     parents: "students",
     years: "academics",
     exams: "academics",
@@ -85,6 +86,7 @@ export function guardRoute(
   const k = path[0],
     read = method === "GET";
   let permission: Permission | undefined;
+  if (k === "portal-staff") permission = "portal.manage";
   if (["teaching", "timetables"].includes(k))
     permission = read ? "timetable.view" : "timetable.manage";
   if (k === "facilities")

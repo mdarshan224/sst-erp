@@ -1,3 +1,0 @@
-Version: 27
-Source commit: f9c9766e06c5267bf2911ec5230c101519e94143
-Domain: https://erp.sohansoft.in

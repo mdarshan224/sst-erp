@@ -1709,3 +1709,108 @@ export const holidays = sqliteTable(
     ),
   ],
 );
+
+// Password-based student/guardian access is separate from staff SMS sessions.
+export const portalAccounts = sqliteTable(
+  "portal_accounts",
+  {
+    id: id(),
+    ...tenant(),
+    kind: text("kind").notNull(),
+    studentId: text("student_id").references(() => students.id),
+    parentId: text("parent_id").references(() => parents.id),
+    username: text("username").notNull().unique(),
+    passwordHash: text("password_hash").notNull(),
+    mustChange: integer("must_change").notNull().default(1),
+    credentialExpires: text("credential_expires"),
+    version: integer("version").notNull().default(1),
+    failedAttempts: integer("failed_attempts").notNull().default(0),
+    lockedUntil: text("locked_until"),
+    active: integer("active").notNull().default(1),
+    ...time(),
+  },
+  (t) => [
+    uniqueIndex("portal_student_account").on(t.institutionId, t.studentId),
+    uniqueIndex("portal_parent_account").on(t.institutionId, t.parentId),
+  ],
+);
+export const portalSessions = sqliteTable(
+  "portal_sessions",
+  {
+    id: id(),
+    ...tenant(),
+    accountId: text("account_id")
+      .notNull()
+      .references(() => portalAccounts.id),
+    tokenHash: text("token_hash").notNull().unique(),
+    version: integer("version").notNull(),
+    expiresAt: text("expires_at").notNull(),
+    lastSeen: text("last_seen").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [index("portal_session_account").on(t.institutionId, t.accountId)],
+);
+export const portalAnnouncements = sqliteTable(
+  "portal_announcements",
+  {
+    id: id(),
+    ...tenant(),
+    studentId: text("student_id").references(() => students.id),
+    title: text("title").notNull(),
+    body: text("body").notNull(),
+    status: text("status").notNull().default("Published"),
+    ...time(),
+  },
+  (t) => [
+    index("portal_announcement_scope").on(
+      t.institutionId,
+      t.studentId,
+      t.createdAt,
+    ),
+  ],
+);
+export const portalDocuments = sqliteTable(
+  "portal_documents",
+  {
+    id: id(),
+    ...tenant(),
+    studentId: text("student_id")
+      .notNull()
+      .references(() => students.id),
+    title: text("title").notNull(),
+    objectKey: text("object_key").notNull(),
+    mime: text("mime").notNull(),
+    size: integer("size").notNull(),
+    status: text("status").notNull().default("Published"),
+    ...time(),
+  },
+  (t) => [index("portal_document_scope").on(t.institutionId, t.studentId)],
+);
+export const portalServiceRequests = sqliteTable(
+  "portal_service_requests",
+  {
+    id: id(),
+    ...tenant(),
+    studentId: text("student_id")
+      .notNull()
+      .references(() => students.id),
+    academicYearId: text("academic_year_id")
+      .notNull()
+      .references(() => academicYears.id),
+    kind: text("kind").notNull(),
+    notes: text("notes").notNull(),
+    status: text("status").notNull().default("Pending"),
+    resolution: text("resolution"),
+    allocationId: text("allocation_id").references(
+      () => facilityAllocations.id,
+    ),
+    ...time(),
+  },
+  (t) => [
+    index("portal_service_scope").on(
+      t.institutionId,
+      t.studentId,
+      t.academicYearId,
+    ),
+  ],
+);

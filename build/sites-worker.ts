@@ -50,7 +50,9 @@ export default {
       handler.fetch(request, env, ctx),
     );
     if (
-      /^\/(portal\/|api\/parent-access\/)/.test(new URL(request.url).pathname)
+      /^\/(portal\/|student-portal(?:\/|$)|api\/(?:parent-access|student-portal)\/)/.test(
+        new URL(request.url).pathname,
+      )
     )
       return Promise.resolve(response).then((original) => {
         const secured = new Response(original.body, original);

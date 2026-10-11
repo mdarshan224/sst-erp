@@ -3,7 +3,14 @@ import { z } from "zod";
 import { createStudent, promote } from "../catalog";
 import { all, batch, insert, now, Row, stmt, uuid } from "../db";
 import { financialProfile, listStudents } from "../queries";
-import { accessStudent, ApiError, audit, own, permit } from "../security";
+import {
+  accessStudent,
+  ApiError,
+  audit,
+  own,
+  permit,
+  hasPermission,
+} from "../security";
 import { ok, RouteContext } from "./shared";
 
 export async function studentsRoute(
@@ -98,7 +105,15 @@ export async function studentsRoute(
   if (method === "POST") {
     if (path[0] === "students" && path.length === 1) {
       const r = await createStudent(actor, body);
-      return ok({ id: r.id }, requestId);
+      return ok(
+        {
+          id: r.id,
+          credentials: hasPermission(actor, "portal.manage")
+            ? r.credentials
+            : undefined,
+        },
+        requestId,
+      );
     }
   }
   if (method === "POST") {

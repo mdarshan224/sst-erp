@@ -132,8 +132,10 @@ export async function parentOverview(actor: Actor, params: URLSearchParams) {
     name: string;
     admission_number: string;
   }>(
-    "SELECT s.id,s.name,s.admission_number FROM students s JOIN student_parents sp ON sp.student_id=s.id AND sp.institution_id=s.institution_id WHERE sp.institution_id=? AND sp.parent_id=? ORDER BY s.name LIMIT 20",
-    [actor.institutionId, actor.parentId],
+    actor.portalStudentId
+      ? "SELECT id,name,admission_number FROM students WHERE institution_id=? AND id=?"
+      : "SELECT s.id,s.name,s.admission_number FROM students s JOIN student_parents sp ON sp.student_id=s.id AND sp.institution_id=s.institution_id WHERE sp.institution_id=? AND sp.parent_id=? ORDER BY s.name LIMIT 20",
+    [actor.institutionId, actor.portalStudentId || actor.parentId],
   );
   const studentId = params.get("student") || children[0]?.id;
   if (studentId && !children.some((s) => s.id === studentId))
@@ -187,7 +189,7 @@ export async function parentOverview(actor: Actor, params: URLSearchParams) {
     ),
     all(
       "SELECT id,financial_year,donation_reference,amount_paise FROM donation_certificates WHERE institution_id=? AND parent_id=? ORDER BY financial_year DESC LIMIT 50",
-      [actor.institutionId, actor.parentId],
+      [actor.institutionId, actor.parentId || ""],
     ),
     all(
       "SELECT ii.id,ii.invoice_id,ii.name,ii.amount_paise FROM invoice_items ii JOIN invoices i ON i.id=ii.invoice_id AND i.institution_id=ii.institution_id WHERE i.institution_id=? AND i.student_id=? AND i.academic_year_id=? ORDER BY i.issued_date DESC,ii.name LIMIT 500",

@@ -1,3 +1,4 @@
+import { studentPortalRoute } from "../student-portal";
 import { websitePublic } from "../website";
 import { billingWebhook } from "../subscription-billing";
 import { domainTenant, domainBindings } from "../domain-routing";
@@ -27,6 +28,8 @@ export async function publicRoute(
   method: string,
   requestId: string,
 ): Promise<Response | null> {
+  const portal = await studentPortalRoute(request, path, requestId);
+  if (portal) return portal;
   const website = await websitePublic(request, path, method, requestId);
   if (website) return website;
   if (

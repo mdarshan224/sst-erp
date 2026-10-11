@@ -19,6 +19,7 @@ export const modules = [
   "settings",
 ] as const;
 export const permissions = [
+  "portal.manage",
   "facilities.view",
   "facilities.manage",
   "students.view",
@@ -51,6 +52,7 @@ export const permissions = [
 ] as const;
 export type Permission = (typeof permissions)[number];
 export const permissionLabels: Record<Permission, string> = {
+  "portal.manage": "Manage assigned student/parent portal accounts and content",
   "facilities.view": "View transport and hostel allocations",
   "facilities.manage": "Manage facilities and allocations",
   "students.view": "View students",
@@ -160,6 +162,7 @@ export function normalizedPermissions(
       ["students.view", "fees.view", "payments.view", "receipts.view"].forEach(
         (v) => result.add(v as Permission),
       );
+    if (value === "portal.manage") result.add("students.view");
     if (value === "exams.grade") result.add("exams.view");
     if (value === "attendance.mark") result.add("attendance.view");
     if (value.startsWith("refunds.")) result.add("payments.view");
@@ -180,7 +183,9 @@ export const roleLabel = (role: string) =>
 export const platformRoles = ["SUPER_ADMIN"] as const;
 
 export function permissionModule(permission: Permission): string {
-  const area = permission.split(".")[0];
+  const area = permission.startsWith("portal.")
+    ? "students"
+    : permission.split(".")[0];
   return ["exams", "timetable", "attendance", "facilities"].includes(area)
     ? "academics"
     : ["refunds", "cash"].includes(area)

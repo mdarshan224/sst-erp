@@ -1,3 +1,4 @@
+import { newPortalAccount } from "./portal-credentials";
 import { z } from "zod";
 import { parseMoney } from "../lib/money";
 import { batch, insert, one, Row, stamps, today, uuid } from "./db";
@@ -132,8 +133,20 @@ export async function createStudent(
       aadhaarLast4: d.aadhaarLast4 ? "****" : null,
     }),
   );
+  const portal = await newPortalAccount(actor, "Student", id);
+  statements.push(
+    portal.statement,
+    audit(
+      actor,
+      "Created portal account",
+      "portal_accounts",
+      portal.credentials.accountId,
+      null,
+      { kind: "Student", studentId: id },
+    ),
+  );
   if (commit) await batch(statements);
-  return { id, statements };
+  return { id, statements, credentials: portal.credentials };
 }
 export async function createCatalog(
   actor: Actor,

@@ -15,7 +15,7 @@ import { navigationTarget } from "./navigation-target";
 const eventName = "sohan:workspace-navigation";
 export function workspaceKey(path: string) {
   if (
-    /^\/(?:features|communication|pricing|about|contact|policies|solutions|benefits|implementation|faq)(?:[/?#]|$)/.test(
+    /^\/(?:features|communication|pricing|about|contact|policies|solutions|benefits|implementation|faq|student-portal)(?:[/?#]|$)/.test(
       path,
     )
   )

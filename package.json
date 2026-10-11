@@ -24,7 +24,8 @@
     "test:timetable": "node tests/timetable-unit.mjs && node tests/timetable.mjs",
     "test:facilities": "node tests/facilities-client.mjs && node tests/facilities.mjs",
     "test:navigation": "node --experimental-strip-types --test tests/navigation.test.mjs tests/resource-client.test.mjs && node tests/client-navigation.mjs",
-    "test:billing": "node tests/subscription-billing.mjs"
+    "test:billing": "node tests/subscription-billing.mjs",
+    "test:portal": "node tests/student-portal.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

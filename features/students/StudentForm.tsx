@@ -32,6 +32,7 @@ export function StudentForm({
     });
   const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setD({ ...d, [key]: e.target.value });
+  const [credentials, setCredentials] = useState<Row | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const draft = useLocalDraft<Row>({
     storageKey: [
@@ -72,6 +73,40 @@ export function StudentForm({
   const errors = fieldErrors(studentFormSchema, d);
   const error = (key: string) =>
     submitted || d[key] ? errors[key] : undefined;
+  if (credentials)
+    return (
+      <FormDialog
+        open={open}
+        onClose={() => {
+          setCredentials(null);
+          onClose();
+        }}
+        title="Student created — portal credentials"
+        submitLabel="Credentials saved"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setCredentials(null);
+          onClose();
+        }}
+      >
+        <p>
+          Share privately after verifying identity. These credentials are shown
+          once.
+        </p>
+        <p>Portal: /student-portal</p>
+        <p>
+          Username: <strong>{credentials.username}</strong>
+        </p>
+        <p>
+          Temporary password:{" "}
+          <strong className="break-all">{credentials.password}</strong>
+        </p>
+        <p>
+          Expires: {credentials.expiresAt}. The student must change this
+          password at first sign-in.
+        </p>
+      </FormDialog>
+    );
   return (
     <FormDialog
       open={open}
@@ -100,11 +135,12 @@ export function StudentForm({
               ([_, v]) => v !== "",
             ),
           );
-          await request("students", { method: "POST", body });
+          const result = await request("students", { method: "POST", body });
           toast.success("Student and guardian records saved.");
           draft.clear();
           refresh();
-          onClose();
+          if (result.credentials) setCredentials(result.credentials);
+          else onClose();
         } catch (e) {
           toast.error((e as Error).message);
         } finally {

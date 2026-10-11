@@ -1,3 +1,4 @@
+import { portalStaffRoute } from "./portal-staff";
 import { billingRoute } from "./billing";
 import { idempotent, requiresIdempotency } from "../idempotency";
 import { ApiError } from "../security";
@@ -18,6 +19,7 @@ import { usersRoute } from "./users";
 type Route = (context: RouteContext) => Promise<Response | null>;
 // Preserve specificity and existing route precedence; null means not mounted.
 const institutionRoutes: readonly Route[] = Object.freeze([
+  portalStaffRoute,
   billingRoute,
   facilitiesRoute,
   academicsRoute,

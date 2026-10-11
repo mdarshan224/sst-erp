@@ -44,6 +44,7 @@ import { PaymentDialog } from "@/features/payments/PaymentDialog";
 import { Phone, Plus, ShieldCheck, UserRound } from "lucide-react";
 import { lazy, Suspense, useState } from "react";
 import { toast } from "sonner";
+import { PortalManagement } from "./PortalManagement";
 import { ParentAccess } from "./ParentAccess";
 import { TaxEvidence } from "./TaxEvidence";
 const FeeHistory = lazy(() => import("./FeeHistory"));
@@ -108,6 +109,11 @@ export function StudentProfile({
       <>
         <PageHead
           title={s.name}
+          actions={
+            can("portal.manage") ? (
+              <PortalManagement studentId={id} />
+            ) : undefined
+          }
           description={
             s.class_name + " " + s.section_name + " · " + s.admission_number
           }
@@ -158,6 +164,7 @@ export function StudentProfile({
               <UserRound size={16} />
               Student details
             </Button>
+            {can("portal.manage") && <PortalManagement studentId={id} />}
             {s.parent_id && can("students.manage") && (
               <ParentAccess parentId={s.parent_id} />
             )}
