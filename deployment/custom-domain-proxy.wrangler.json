@@ -1,0 +1,6 @@
+{
+  "name": "sohan-erp-domain-proxy",
+  "main": "custom-domain-proxy.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false
+}

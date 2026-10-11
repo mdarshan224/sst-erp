@@ -1,0 +1,1620 @@
+[
+  {
+    "file": "app/exam-verification/[token]/page.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "cloudflare-env.d.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "components/campus/Access.tsx",
+    "errors": 0,
+    "warnings": 4,
+    "findings": [
+      {
+        "line": 55,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'returnTo' is assigned a value but never used."
+      },
+      {
+        "line": 73,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 82,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 122,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      }
+    ]
+  },
+  {
+    "file": "components/campus/App.tsx",
+    "errors": 3,
+    "warnings": 16,
+    "findings": [
+      {
+        "line": 2,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'platformColor' is defined but never used."
+      },
+      {
+        "line": 384,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'institutionId' is assigned a value but never used."
+      },
+      {
+        "line": 384,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'setInstitutionId' is assigned a value but never used."
+      },
+      {
+        "line": 436,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 454,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'_' is defined but never used."
+      },
+      {
+        "line": 475,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 541,
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": 1,
+        "message": "React Hook useEffect has a missing dependency: 'basePath'. Either include it or remove the dependency array."
+      },
+      {
+        "line": 557,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 727,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 741,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'parentRole' is defined but never used."
+      },
+      {
+        "line": 749,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'admin' is assigned a value but never used."
+      },
+      {
+        "line": 749,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'collect' is assigned a value but never used."
+      },
+      {
+        "line": 749,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'finance' is assigned a value but never used."
+      },
+      {
+        "line": 750,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'role' is assigned a value but never used."
+      },
+      {
+        "line": 795,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 816,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 911,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'admin' is assigned a value but never used."
+      },
+      {
+        "line": 912,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'institutionId' is assigned a value but never used."
+      },
+      {
+        "line": 934,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "components/campus/CatalogDialog.tsx",
+    "errors": 1,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 21,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 51,
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": 1,
+        "message": "React Hook useEffect has missing dependencies: 'boot.campuses', 'boot.classes', 'boot.components.length', and 'scope.year'. Either include them or remove the dependency array."
+      }
+    ]
+  },
+  {
+    "file": "components/campus/SmsLogin.tsx",
+    "errors": 6,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'retry' is defined but never used."
+      },
+      {
+        "line": 68,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/admin/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 75,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/auth/setup/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 78,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/signin-with-chatgpt/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 97,
+        "rule": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+      },
+      {
+        "line": 228,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/signin-with-chatgpt/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 236,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/admin/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 252,
+        "rule": "@next/next/no-location-assign-relative-destination",
+        "severity": 1,
+        "message": "Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination"
+      },
+      {
+        "line": 256,
+        "rule": "@next/next/no-location-assign-relative-destination",
+        "severity": 1,
+        "message": "Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination"
+      }
+    ]
+  },
+  {
+    "file": "components/campus/context.tsx",
+    "errors": 3,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 27,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 75,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "components/campus/ui.tsx",
+    "errors": 2,
+    "warnings": 4,
+    "findings": [
+      {
+        "line": 245,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'selected' is defined but never used."
+      },
+      {
+        "line": 246,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'onSelect' is defined but never used."
+      },
+      {
+        "line": 269,
+        "rule": "react-hooks/incompatible-library",
+        "severity": 1,
+        "message": "Compilation Skipped: Use of incompatible library"
+      },
+      {
+        "line": 285,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 614,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 647,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "db/index.ts",
+    "errors": 2,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 60,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 71,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'ignored' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "deployment/custom-domain-proxy.ts",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "import/no-anonymous-default-export",
+        "severity": 1,
+        "message": "Assign object to a variable before exporting as module default"
+      }
+    ]
+  },
+  {
+    "file": "features/auth/CommunicationSettings.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 31,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "features/auth/Settings.tsx",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 48,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 60,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/exams/AdmitCard.tsx",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 45,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 97,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      }
+    ]
+  },
+  {
+    "file": "features/exams/Exams.tsx",
+    "errors": 6,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 28,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'boot' is assigned a value but never used."
+      },
+      {
+        "line": 36,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 350,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 359,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 363,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 757,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 870,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/fees/Fees.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 42,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "features/organization/Dashboard.tsx",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 63,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      },
+      {
+        "line": 63,
+        "rule": "@next/next/no-html-link-for-pages",
+        "severity": 2,
+        "message": "Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages"
+      }
+    ]
+  },
+  {
+    "file": "features/parent/ParentPortal.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 149,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "features/payments/PaymentDialog.tsx",
+    "errors": 6,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 51,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 83,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 110,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 413,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 447,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 485,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/payments/Registers.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 93,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/platform/App.tsx",
+    "errors": 1,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'platformColor' is defined but never used."
+      },
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'brandTheme' is defined but never used."
+      },
+      {
+        "line": 176,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 242,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      }
+    ]
+  },
+  {
+    "file": "features/platform/Holidays.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 56,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "features/platform/InstitutionDetail.tsx",
+    "errors": 1,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 199,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      },
+      {
+        "line": 372,
+        "rule": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+      }
+    ]
+  },
+  {
+    "file": "features/platform/Registers.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 76,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/platform/ServiceSetup.tsx",
+    "errors": 8,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 22,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 30,
+        "rule": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+      },
+      {
+        "line": 160,
+        "rule": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+      },
+      {
+        "line": 194,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 196,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 205,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 210,
+        "rule": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`."
+      },
+      {
+        "line": 222,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/platform/context.tsx",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 8,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 25,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/reports/DailyClosureWizard.tsx",
+    "errors": 1,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 32,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 37,
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": 1,
+        "message": "React Hook useEffect has a missing dependency: 'summary'. Either include it or remove the dependency array. If 'setSnapshot' needs the current value of 'summary', you can also switch to useReducer instead of useState and read 'summary' in the reducer."
+      }
+    ]
+  },
+  {
+    "file": "features/reports/Dashboard.tsx",
+    "errors": 3,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 237,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 243,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 318,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "features/students/Attendance.tsx",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 29,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      },
+      {
+        "line": 101,
+        "rule": "react-hooks/immutability",
+        "severity": 2,
+        "message": "Error: This value cannot be modified"
+      }
+    ]
+  },
+  {
+    "file": "features/students/Documents.tsx",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'id' is defined but never used."
+      },
+      {
+        "line": 21,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'data' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "features/students/FeeHistory.tsx",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 30,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'invoices' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "features/students/ParentAccess.tsx",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 25,
+        "rule": "react-hooks/exhaustive-deps",
+        "severity": 1,
+        "message": "React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array."
+      }
+    ]
+  },
+  {
+    "file": "features/students/StudentForm.tsx",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 100,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'_' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "features/students/StudentProfile.tsx",
+    "errors": 0,
+    "warnings": 4,
+    "findings": [
+      {
+        "line": 62,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'scope' is assigned a value but never used."
+      },
+      {
+        "line": 69,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'t' is assigned a value but never used."
+      },
+      {
+        "line": 72,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'router' is assigned a value but never used."
+      },
+      {
+        "line": 185,
+        "rule": "@next/next/no-img-element",
+        "severity": 1,
+        "message": "Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element"
+      }
+    ]
+  },
+  {
+    "file": "features/students/Students.tsx",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 82,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "hooks/use-local-draft.ts",
+    "errors": 4,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 25,
+        "rule": "react-hooks/refs",
+        "severity": 2,
+        "message": "Error: Cannot access refs during render"
+      },
+      {
+        "line": 26,
+        "rule": "react-hooks/refs",
+        "severity": 2,
+        "message": "Error: Cannot access refs during render"
+      },
+      {
+        "line": 45,
+        "rule": "react-hooks/refs",
+        "severity": 2,
+        "message": "Error: Cannot access refs during render"
+      },
+      {
+        "line": 50,
+        "rule": "react-hooks/set-state-in-effect",
+        "severity": 2,
+        "message": "Error: Calling setState synchronously within an effect can trigger cascading renders"
+      }
+    ]
+  },
+  {
+    "file": "lib/api-client.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "lib/cash.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "lib/resource-client.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/attendance.ts",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 3,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'stamps' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/catalog.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 155,
+        "rule": "prefer-const",
+        "severity": 2,
+        "message": "'extra' is never reassigned. Use 'const' instead."
+      }
+    ]
+  },
+  {
+    "file": "server/cloudflare-hostnames.ts",
+    "errors": 3,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 124,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 138,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 140,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/communications.ts",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'stamps' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/db.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 2,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/domains.ts",
+    "errors": 2,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is defined but never used."
+      },
+      {
+        "line": 182,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 184,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/idempotency.ts",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/openapi.ts",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 407,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 433,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/platform.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 58,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/providers.ts",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 200,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'razorpay_credentials' is assigned a value but never used."
+      },
+      {
+        "line": 200,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'cashfree_credentials' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/reports.ts",
+    "errors": 2,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 404,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      },
+      {
+        "line": 762,
+        "rule": "prefer-const",
+        "severity": 2,
+        "message": "'lines' is never reassigned. Use 'const' instead."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/cash.ts",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/fees.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'p' is assigned a value but never used."
+      },
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 10,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/operations.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 16,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'p' is assigned a value but never used."
+      },
+      {
+        "line": 16,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 16,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/parent.ts",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 11,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'own' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/payments.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 22,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'p' is assigned a value but never used."
+      },
+      {
+        "line": 22,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 22,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/reports.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'body' is assigned a value but never used."
+      },
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 20,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/resources.ts",
+    "errors": 1,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 21,
+        "rule": "prefer-const",
+        "severity": 2,
+        "message": "'countSql' is never reassigned. Use 'const' instead."
+      },
+      {
+        "line": 21,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'countSql' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/settings.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'p' is assigned a value but never used."
+      },
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/students.ts",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 12,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/routes/users.ts",
+    "errors": 0,
+    "warnings": 3,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'p' is assigned a value but never used."
+      },
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'request' is assigned a value but never used."
+      },
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'url' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "server/staff.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 226,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/tenancy.ts",
+    "errors": 1,
+    "warnings": 0,
+    "findings": [
+      {
+        "line": 149,
+        "rule": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "message": "Unexpected any. Specify a different type."
+      }
+    ]
+  },
+  {
+    "file": "server/timetable.ts",
+    "errors": 0,
+    "warnings": 2,
+    "findings": [
+      {
+        "line": 11,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'Row' is defined but never used."
+      },
+      {
+        "line": 18,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'clock' is defined but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/exams.mjs",
+    "errors": 0,
+    "warnings": 4,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'PDFDocument' is defined but never used."
+      },
+      {
+        "line": 17,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'delivered' is assigned a value but never used."
+      },
+      {
+        "line": 18,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'deliveryStarted' is assigned a value but never used."
+      },
+      {
+        "line": 110,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'student' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/facilities.mjs",
+    "errors": 0,
+    "warnings": 4,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'PDFDocument' is defined but never used."
+      },
+      {
+        "line": 18,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'delivered' is assigned a value but never used."
+      },
+      {
+        "line": 19,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'deliveryStarted' is assigned a value but never used."
+      },
+      {
+        "line": 643,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'otherBoot' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/fee-collection.mjs",
+    "errors": 0,
+    "warnings": 5,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'PDFDocument' is defined but never used."
+      },
+      {
+        "line": 170,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'sign' is assigned a value but never used."
+      },
+      {
+        "line": 172,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'eventually' is assigned a value but never used."
+      },
+      {
+        "line": 246,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'sibling' is assigned a value but never used."
+      },
+      {
+        "line": 255,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'parentId' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/refactor.mjs",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 18,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'deliveryStarted' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/saas.mjs",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 204,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'assignment' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/sms-auth.mjs",
+    "errors": 0,
+    "warnings": 1,
+    "findings": [
+      {
+        "line": 252,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'boot' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/subscription-billing.mjs",
+    "errors": 0,
+    "warnings": 5,
+    "findings": [
+      {
+        "line": 7,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'PDFDocument' is defined but never used."
+      },
+      {
+        "line": 213,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'eventually' is assigned a value but never used."
+      },
+      {
+        "line": 232,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'original' is assigned a value but never used."
+      },
+      {
+        "line": 289,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'sibling' is assigned a value but never used."
+      },
+      {
+        "line": 298,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'parentId' is assigned a value but never used."
+      }
+    ]
+  },
+  {
+    "file": "tests/timetable.mjs",
+    "errors": 0,
+    "warnings": 5,
+    "findings": [
+      {
+        "line": 6,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'PDFDocument' is defined but never used."
+      },
+      {
+        "line": 17,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'delivered' is assigned a value but never used."
+      },
+      {
+        "line": 18,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'deliveryStarted' is assigned a value but never used."
+      },
+      {
+        "line": 150,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'student' is assigned a value but never used."
+      },
+      {
+        "line": 490,
+        "rule": "@typescript-eslint/no-unused-vars",
+        "severity": 1,
+        "message": "'domainToken' is assigned a value but never used."
+      }
+    ]
+  }
+]

@@ -1,0 +1,1 @@
+CREATE INDEX `payment_status_scope` ON `payments` (`institution_id`,`academic_year_id`,`status`,`paid_at`);
