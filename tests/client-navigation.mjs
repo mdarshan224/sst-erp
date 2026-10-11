@@ -152,18 +152,37 @@ try {
   window.location.pathname = "/";
   router.push("/admin/plans");
   assert.deepEqual(calls[0], ["push", "/admin/plans", undefined]);
-  for (const publicPath of ["/features", "/communication", "/pricing", "/about", "/contact", "/policies/refunds"]) {
+  for (const publicPath of [
+    "/features",
+    "/communication",
+    "/pricing",
+    "/about",
+    "/contact",
+    "/policies/refunds",
+    "/solutions/fees-finance",
+    "/benefits",
+    "/implementation",
+    "/faq",
+  ]) {
     calls.length = 0;
     window.location.pathname = "/campus/a/students";
     router.push(publicPath);
-    assert.deepEqual(calls, [["push", publicPath, undefined]], "public route must leave retained workspace: " + publicPath);
+    assert.deepEqual(
+      calls,
+      [["push", publicPath, undefined]],
+      "public route must leave retained workspace: " + publicPath,
+    );
     calls.length = 0;
     window.location.pathname = publicPath;
     router.push("/admin");
-    assert.deepEqual(calls, [["push", "/admin", undefined]], "public route must not retain workspace layout");
+    assert.deepEqual(
+      calls,
+      [["push", "/admin", undefined]],
+      "public route must not retain workspace layout",
+    );
   }
   console.log(
-    "23 workspace/public navigation, click interception and modifier checks passed",
+    "31 workspace/public navigation, click interception and modifier checks passed",
   );
 } finally {
   delete globalThis.__capturedLinks;

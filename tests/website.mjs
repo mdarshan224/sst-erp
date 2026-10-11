@@ -123,6 +123,16 @@ try {
     "/policies/terms",
     "/policies/refunds",
     "/policies/delivery",
+    "/benefits",
+    "/implementation",
+    "/faq",
+    "/solutions/fees-finance",
+    "/solutions/students-admissions",
+    "/solutions/attendance-timetable",
+    "/solutions/examinations",
+    "/solutions/transport-hostel",
+    "/solutions/reports-insights",
+    "/solutions/security-control",
   ]) {
     const response = await mf.dispatchFetch("https://erp.sohansoft.in" + path);
     const html = await response.text();
@@ -142,6 +152,22 @@ try {
     );
     if (path === "") assert.match(html, /A campus built around your people/);
   }
+  const badSolution = await mf.dispatchFetch(
+    "https://erp.sohansoft.in/solutions/not-a-module",
+  );
+  check("unknown module returns 404", () =>
+    assert.equal(badSolution.status, 404),
+  );
+  const richHome = await (
+    await mf.dispatchFetch("https://erp.sohansoft.in/")
+  ).text();
+  check("home contains images, benefits, workflows and FAQs", () => {
+    assert.match(richHome, /connected-campus.webp/);
+    assert.match(richHome, /connected-workday.webp/);
+    assert.match(richHome, /For accounts teams/);
+    assert.match(richHome, /Read all FAQs/);
+    assert.match(richHome, /solutions\/examinations/);
+  });
   const missing = await mf.dispatchFetch(
     "https://erp.sohansoft.in/policies/not-a-policy",
   );

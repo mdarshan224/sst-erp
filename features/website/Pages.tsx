@@ -1,3 +1,12 @@
+import {
+  CampusStory,
+  BenefitsSection,
+  DaySection,
+  ExploreSolutions,
+  IntegrationSection,
+  FAQSection,
+} from "./RichSections";
+import { solutions } from "./details";
 import Link from "./PublicLink";
 import {
   ArrowUpRight,
@@ -52,6 +61,7 @@ export function Home({ config }: { config: WebsiteConfig }) {
         <p>Academies</p>
         <p>Coaching centres</p>
       </section>
+      <CampusStory />
       <section className={s.section}>
         <div className={s.sectionHead}>
           <div>
@@ -126,6 +136,7 @@ export function Home({ config }: { config: WebsiteConfig }) {
           </article>
         </div>
       </section>
+      <BenefitsSection />
       <section className={s.softSection}>
         <div className={s.sectionHead}>
           <div>
@@ -148,6 +159,7 @@ export function Home({ config }: { config: WebsiteConfig }) {
           </Link>
         </div>
       </section>
+      <DaySection />
       <section className={s.darkBand}>
         <span className={s.eyebrow}>FLEXIBLE BY DESIGN</span>
         <h2>
@@ -218,6 +230,9 @@ export function Home({ config }: { config: WebsiteConfig }) {
           ))}
         </div>
       </section>
+      <ExploreSolutions />
+      <IntegrationSection />
+      <FAQSection />
       <CTA />
     </Shell>
   );
@@ -235,6 +250,16 @@ export function ModuleGrid({ compact = false }: { compact?: boolean }) {
           <h3>{m.name}</h3>
           <p>{m.description}</p>
           {!compact && <small>{m.detail}</small>}
+          <Link
+            className={s.moduleMore}
+            href={
+              i === 4
+                ? "/communication"
+                : "/solutions/" + solutions[[0, 1, 2, 3, 0, 4, 5, 6][i]].slug
+            }
+          >
+            Explore module ↗
+          </Link>
         </article>
       ))}
     </div>
@@ -287,6 +312,7 @@ export function Features({ config }: { config: WebsiteConfig }) {
           ))}
         </div>
       </section>
+      <ExploreSolutions />
       <CTA />
     </Shell>
   );

@@ -37,6 +37,9 @@ export function Shell({
           <div>
             <b>Explore</b>
             <Link href="/features">The platform</Link>
+            <Link href="/benefits">Benefits for your team</Link>
+            <Link href="/implementation">Setup & onboarding</Link>
+            <Link href="/faq">FAQs & guidance</Link>
             <Link href="/communication">Communication</Link>
             <Link href="/pricing">Plans & customisation</Link>
             <Link href="/about">About the ERP</Link>

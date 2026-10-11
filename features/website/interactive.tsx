@@ -22,6 +22,7 @@ export function Nav({ brand }: { brand: string }) {
         ["/features", "Platform"],
         ["/communication", "Communication"],
         ["/pricing", "Plans"],
+        ["/benefits", "Benefits"],
         ["/about", "About"],
       ].map(([url, label]) => (
         <Link

@@ -1,13 +1,16 @@
-Sohan ERP version 26 — navigation, typography and gold theme
+Sohan ERP version 27 — expanded product website
 
 Production build: passed
 TypeScript: passed
-Workspace/public navigation: 23 checks passed
-Navigation target/filter tests: 3 passed
-Website integration: 20 checks passed
+Website integration: 32 checks passed
 SaaS/navigation/tenant permissions regression: 77 checks passed
-Targeted lint: zero errors; two existing local-logo image warnings
+Workspace/public navigation: 31 checks passed
+Total automated checks: 140
+Targeted lint: zero errors; five local-image optimisation suggestions
 
-Browser/device visual testing unavailable. No zero-bug guarantee is claimed.
-No live messages, payments or production data changes were performed.
-See docs/NAVIGATION-GOLD-UPDATE.md and README.md.
+Added 10 pages, two original conceptual images, role-based benefits,
+daily workflow, module detail sections, onboarding guidance and FAQs.
+Combined WebP image size: approximately 604 KB.
+Browser/device visual testing unavailable. No zero-bug guarantee claimed.
+No live messages, payments or production institution data changes made.
+See docs/EXPANDED-ERP-WEBSITE.md for scope, prompts and final image paths.
