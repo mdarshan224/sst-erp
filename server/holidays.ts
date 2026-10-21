@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { dateField } from "./catalog";
-import { all, batch, insert, one, stamps, today, uuid } from "./db";
+import { all, batch, insert, one, stamps, stmt, now, today, uuid } from "./db";
 import { Actor, ApiError, audit, permit } from "./security";
 import { platformAudit } from "./tenancy";
 export async function holidaysOn(institutionId: string, date: string) {
@@ -48,6 +48,7 @@ export async function saveHoliday(
   actor: Actor,
   input: unknown,
   platform = false,
+  holidayId?: string,
 ) {
   permit(actor, platform ? "system" : "academics.manage");
   const d = z
@@ -76,7 +77,28 @@ export async function saveHoliday(
     throw new ApiError(404, "NOT_FOUND", "Institution not found.");
   if (!platform && d.institutionId && d.institutionId !== actor.institutionId)
     throw new ApiError(403, "TENANT_ISOLATION", "Choose your own institution.");
-  const id = uuid(),
+  const existing = holidayId
+    ? await one(
+        "SELECT * FROM holidays WHERE id=?" +
+          (platform ? "" : " AND institution_id=?"),
+        platform ? [holidayId] : [holidayId, actor.institutionId],
+      )
+    : null;
+  if (holidayId && !existing)
+    throw new ApiError(404, "NOT_FOUND", "Holiday not found.");
+  if (existing && existing.status !== "Active")
+    throw new ApiError(
+      409,
+      "HOLIDAY_CANCELLED",
+      "Cancelled holidays cannot be edited.",
+    );
+  if (existing && existing.institution_id !== tenant)
+    throw new ApiError(
+      422,
+      "HOLIDAY_SCOPE",
+      "Keep the original institution scope when editing.",
+    );
+  const id = holidayId || uuid(),
     row = {
       id,
       institution_id: tenant,
@@ -87,18 +109,30 @@ export async function saveHoliday(
       ...stamps(actor.userId),
     };
   await batch([
-    insert("holidays", row),
+    existing
+      ? stmt(
+          "UPDATE holidays SET name=?,kind=?,start_date=?,end_date=?,updated_at=?,updated_by=? WHERE id=? AND status='Active'",
+          [d.name, d.kind, d.startDate, d.endDate, now(), actor.userId, id],
+        )
+      : insert("holidays", row),
     platform
       ? platformAudit(
           actor,
-          "Created holiday",
+          existing ? "Updated holiday" : "Created holiday",
           "holidays",
           id,
           null,
           { ...d, institutionId: tenant },
           tenant,
         )
-      : audit(actor, "Created holiday", "holidays", id, null, row),
+      : audit(
+          actor,
+          existing ? "Updated holiday" : "Created holiday",
+          "holidays",
+          id,
+          null,
+          row,
+        ),
   ]);
   return { id };
 }

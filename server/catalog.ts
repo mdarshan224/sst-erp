@@ -386,6 +386,12 @@ export async function createCatalog(
           "DUPLICATE_COMPONENT",
           "Select each component once.",
         );
+      if (new Set(d.dates).size !== d.dates.length)
+        throw new ApiError(
+          422,
+          "DUPLICATE_DUE_DATE",
+          "Installment dates must be unique.",
+        );
       if (d.dates.some((dt) => dt < year.start_date || dt > year.end_date))
         throw new ApiError(
           422,

@@ -95,11 +95,11 @@ export function Users() {
         <ShieldCheck size={17} />
         <span>
           Staff sign in with an OTP on their registered mobile. Pending grants
-          reserve a user seat. Guardian contact records do not have login
-          accounts.
+          reserve a user seat. Student and parent accounts use their separate
+          portal.
         </span>
       </div>
-      <Card>
+      <Card className="staff-directory">
         <Tabs defaultValue="members">
           <TabsList>
             <TabsTrigger value="members">Staff users</TabsTrigger>
@@ -119,8 +119,8 @@ export function Users() {
                       label: "Name",
                       render: (m) => (
                         <div className="register-name">
-                          <strong>{m.name}</strong>
-                          <small>{m.email}</small>
+                          <strong>{m.name || "Unnamed staff member"}</strong>
+                          <small>{m.email || "Email not provided"}</small>
                         </div>
                       ),
                     },
@@ -129,7 +129,23 @@ export function Users() {
                       label: "Role",
                       render: (m) => roleLabel(m.role),
                     },
-                    { key: "mobile", label: "Mobile" },
+                    {
+                      key: "section_id",
+                      label: "Assigned class / section",
+                      render: (m) => {
+                        const section = boot.sections.find(
+                          (s: Row) => s.id === m.section_id,
+                        );
+                        return section
+                          ? `${section.class_name} · ${section.name}`
+                          : "Not assigned";
+                      },
+                    },
+                    {
+                      key: "mobile",
+                      label: "Mobile",
+                      render: (m) => m.mobile || "Not provided",
+                    },
                     {
                       key: "active",
                       label: "Access",

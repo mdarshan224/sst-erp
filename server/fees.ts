@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { evaluateFeeRules, FeeRule } from "../lib/fee-rules";
 import { safeMoney, splitMoney } from "../lib/money";
 import { all, batch, insert, one, Row, stamps, today, uuid } from "./db";
@@ -11,6 +12,18 @@ export async function makeAssignment(
   scholarship = 0,
   reason = "",
 ) {
+  z.object({
+    studentId: z
+      .string()
+      .min(1, "Choose a student")
+      .max(100)
+      .regex(/^[a-zA-Z0-9_-]+$/, "Invalid student identifier"),
+    structureId: z
+      .string()
+      .min(1, "Select a fee structure")
+      .max(100)
+      .regex(/^[a-zA-Z0-9_-]+$/, "Invalid fee structure identifier"),
+  }).parse({ studentId, structureId });
   const structure = await own(actor, "fee_structures", structureId);
   if (structure.status !== "Active")
     throw new ApiError(

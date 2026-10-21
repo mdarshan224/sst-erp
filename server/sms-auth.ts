@@ -116,7 +116,9 @@ async function provider(
         ...(action === "send"
           ? { otp_id: c.template, otp_expiry: 5, otp_length: 6 }
           : {}),
-        ...(otp ? { otp } : {}),
+        ...(otp
+          ? { otp, ...(action === "send" ? { variables_values: "{otp}" } : {}) }
+          : {}),
       }),
       signal: AbortSignal.timeout(12000),
     });

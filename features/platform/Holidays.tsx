@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { CalendarDays, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { AppContext, Row } from "@/components/campus/context";
@@ -22,7 +22,13 @@ export default function Holidays() {
   const request = global ? platform!.request : campus!.request,
     refresh = global ? platform!.refresh : campus!.refresh,
     revision = global ? platform!.revision : campus!.revision,
-    canManage = global || campus!.can("academics.manage");
+    canManage = global
+      ? platform!.can("holidays.manage")
+      : campus!.can("academics.manage");
+  const [editing, setEditing] = useState<string | null>(null),
+    [cancel, setCancel] = useState<Row | null>(null),
+    [formError, setFormError] = useState("");
+  const inFlight = useRef(false);
   const [month, setMonth] = useState(() =>
       new Intl.DateTimeFormat("en-CA", {
         timeZone: "Asia/Kolkata",
@@ -88,9 +94,12 @@ export default function Holidays() {
   }
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
+    setFormError("");
     try {
-      await request("holidays", {
+      await request(editing ? `holidays/${editing}/edit` : "holidays", {
         method: "POST",
         body: {
           ...form,
@@ -98,13 +107,17 @@ export default function Holidays() {
         },
       });
       setOpen(false);
+      setMonth(form.startDate.slice(0, 7));
+      setPage(1);
       refresh();
       toast.success(
         "Holiday saved. Attendance and daily classes are not required on these dates.",
       );
     } catch (e) {
+      setFormError((e as Error).message);
       toast.error((e as Error).message);
     } finally {
+      inFlight.current = false;
       setBusy(false);
     }
   }
@@ -124,6 +137,8 @@ export default function Holidays() {
           canManage && (
             <Button
               onClick={() => {
+                setEditing(null);
+                setFormError("");
                 setForm({
                   name: "",
                   kind: global ? "National Holiday" : "Local Event",
@@ -193,6 +208,8 @@ export default function Holidays() {
                     }
                     onClick={() => {
                       if (canManage) {
+                        setEditing(null);
+                        setFormError("");
                         setForm({
                           name: "",
                           kind: global ? "National Holiday" : "Local Event",
@@ -246,27 +263,33 @@ export default function Holidays() {
                   </div>
                   {canManage &&
                     (global || h.institution_id === campus?.institutionId) && (
-                      <Button
-                        variant="outline"
-                        onClick={async () => {
-                          if (
-                            !window.confirm(
-                              "Cancel this holiday and restore daily attendance expectations?",
-                            )
-                          )
-                            return;
-                          try {
-                            await request(`holidays/${h.id}/cancel`, {
-                              method: "POST",
+                      <div className="row-actions">
+                        <Button
+                          variant="outline"
+                          disabled={busy}
+                          onClick={() => {
+                            setEditing(h.id);
+                            setFormError("");
+                            setForm({
+                              name: h.name,
+                              kind: h.kind,
+                              startDate: h.start_date,
+                              endDate: h.end_date,
+                              institutionId: h.institution_id || "",
                             });
-                            refresh();
-                          } catch (e) {
-                            toast.error((e as Error).message);
-                          }
-                        }}
-                      >
-                        Cancel holiday
-                      </Button>
+                            setOpen(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          disabled={busy}
+                          onClick={() => setCancel(h)}
+                        >
+                          Cancel holiday
+                        </Button>
+                      </div>
                     )}
                 </div>
               ))}
@@ -302,13 +325,19 @@ export default function Holidays() {
       <FormDialog
         open={open}
         onClose={() => setOpen(false)}
-        title="Add holiday"
+        title={editing ? "Edit holiday" : "Add holiday"}
         onSubmit={save}
         busy={busy}
       >
+        {formError && (
+          <p role="alert" className="text-red-700">
+            {formError}
+          </p>
+        )}
         <Field label="Name">
           <Input
             required
+            minLength={2}
             maxLength={100}
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -348,7 +377,7 @@ export default function Holidays() {
             />
           </Field>
         </div>
-        {global && (
+        {global && !editing && (
           <>
             <Field label="Find institution (optional)">
               <Input
@@ -369,6 +398,36 @@ export default function Holidays() {
             </Field>
           </>
         )}
+      </FormDialog>
+      <FormDialog
+        open={!!cancel}
+        onClose={() => setCancel(null)}
+        title="Cancel holiday?"
+        description={`Cancel ${cancel?.name || "this holiday"} and restore attendance expectations for its dates. Historical records are retained.`}
+        busy={busy}
+        submitLabel="Cancel holiday"
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (inFlight.current || !cancel) return;
+          inFlight.current = true;
+          setBusy(true);
+          try {
+            await request(`holidays/${cancel.id}/cancel`, {
+              method: "POST",
+              body: {},
+            });
+            setCancel(null);
+            refresh();
+            toast.success("Holiday cancelled.");
+          } catch (error) {
+            toast.error((error as Error).message);
+          } finally {
+            inFlight.current = false;
+            setBusy(false);
+          }
+        }}
+      >
+        <p>This affects attendance and published daily schedules.</p>
       </FormDialog>
     </>
   );

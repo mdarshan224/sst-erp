@@ -186,7 +186,15 @@ export function errorResponse(error: unknown, requestId: string): Response {
       .join("; ");
     fields = error.flatten().fieldErrors;
   } else if (error instanceof Error) {
-    if (/TENANT_DELETING/.test(error.message)) {
+    if (/OTP_COOLDOWN/.test(error.message)) {
+      status = 429;
+      code = "OTP_COOLDOWN";
+      message = "Wait one minute before requesting another security code.";
+    } else if (/HOLIDAY_DUPLICATE/.test(error.message)) {
+      status = 409;
+      code = "HOLIDAY_DUPLICATE";
+      message = "This holiday already exists for these dates and institution.";
+    } else if (/TENANT_DELETING/.test(error.message)) {
       status = 409;
       code = "INSTITUTION_LOCKED";
       message = "This institution is locked for deletion or recovery.";

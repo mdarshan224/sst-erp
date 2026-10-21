@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   Field,
+  FormDialog,
   Input,
   Loading,
   Failure,
@@ -248,7 +249,7 @@ export function InstitutionDeletion({ id }: { id: string }) {
     [busy, setBusy] = useState(false),
     [progress, setProgress] = useState(""),
     [failure, setFailure] = useState(""),
-    [clock, setClock] = useState(0);
+    [clock, setClock] = useState(() => Date.now());
   const inFlight = useRef(false),
     mounted = useRef(true);
   useEffect(() => {
@@ -269,7 +270,7 @@ export function InstitutionDeletion({ id }: { id: string }) {
         "institutions/" + id + "/deletion/" + suffix,
         { method: "POST", body },
       );
-      refresh();
+      if (suffix !== "challenge") refresh();
       return result;
     } catch (e) {
       setFailure((e as Error).message);
@@ -385,7 +386,7 @@ export function InstitutionDeletion({ id }: { id: string }) {
         <div className="grid gap-4 mt-6">
           <Field label="Action">
             <Picker
-              value={action}
+              value={job?.status === "Quarantined" ? action : "request"}
               onChange={(v) => {
                 setAction(v);
                 setChallenge(null);
@@ -437,6 +438,7 @@ export function InstitutionDeletion({ id }: { id: string }) {
             variant="outline"
             disabled={
               busy ||
+              !!(challenge && Date.parse(challenge.resendAt) > clock) ||
               !warning ||
               name !== (job?.institution_name || institution.name)
             }
@@ -445,15 +447,39 @@ export function InstitutionDeletion({ id }: { id: string }) {
                 action: job?.status === "Quarantined" ? action : "request",
               });
               if (c) {
+                setClock(Date.now());
                 setChallenge(c);
                 setOtp("");
               }
             }}
           >
-            Send fresh Super Admin OTP
+            {busy
+              ? "Sending…"
+              : challenge && Date.parse(challenge.resendAt) > clock
+                ? `Resend in ${Math.ceil((Date.parse(challenge.resendAt) - clock) / 1000)}s`
+                : "Send verification code"}
           </Button>
           {challenge && (
-            <>
+            <FormDialog
+              busy={busy}
+              open={!!challenge}
+              onClose={() => {
+                setChallenge(null);
+                setOtp("");
+              }}
+              title="Verify institution action"
+              description="Enter the six-digit code sent to your registered administrator mobile."
+            >
+              {failure && (
+                <p role="alert" className="text-red-700">
+                  {failure}
+                </p>
+              )}
+              {expired && (
+                <p role="alert">
+                  Code expired. Close this window and request a new code.
+                </p>
+              )}
               <p>
                 Code sent to {challenge.mobile}. Expires{" "}
                 {new Date(challenge.expiresAt).toLocaleTimeString()}. Maximum
@@ -461,6 +487,9 @@ export function InstitutionDeletion({ id }: { id: string }) {
               </p>
               <Field label="Security OTP">
                 <Input
+                  autoFocus
+                  autoComplete="one-time-code"
+                  aria-label="Six-digit verification code"
                   inputMode="numeric"
                   maxLength={6}
                   value={otp}
@@ -492,9 +521,27 @@ export function InstitutionDeletion({ id }: { id: string }) {
                   }
                 }}
               >
-                Confirm authorized action
+                {busy ? "Verifying…" : "Verify & confirm action"}
               </Button>
-            </>
+              <Button
+                variant="outline"
+                disabled={busy || Date.parse(challenge.resendAt) > clock}
+                onClick={async () => {
+                  const c = await call("challenge", {
+                    action: job?.status === "Quarantined" ? action : "request",
+                  });
+                  if (c) {
+                    setClock(Date.now());
+                    setChallenge(c);
+                    setOtp("");
+                  }
+                }}
+              >
+                {Date.parse(challenge.resendAt) > clock
+                  ? `Resend in ${Math.ceil((Date.parse(challenge.resendAt) - clock) / 1000)}s`
+                  : "Resend code"}
+              </Button>
+            </FormDialog>
           )}
         </div>
       )}

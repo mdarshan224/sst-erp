@@ -1,0 +1,5 @@
+CREATE TRIGGER deletion_challenge_cooldown BEFORE INSERT ON institution_deletion_challenges BEGIN SELECT (CASE WHEN EXISTS(SELECT 1 FROM institution_deletion_challenges WHERE user_id=NEW.user_id AND created_at>strftime('%Y-%m-%dT%H:%M:%fZ',NEW.created_at,'-60 seconds')) THEN RAISE(ABORT,'OTP_COOLDOWN') END); END;
+--> statement-breakpoint
+CREATE TRIGGER holiday_duplicate_insert BEFORE INSERT ON holidays WHEN NEW.status='Active' BEGIN SELECT (CASE WHEN EXISTS(SELECT 1 FROM holidays WHERE institution_id IS NEW.institution_id AND lower(trim(name))=lower(trim(NEW.name)) AND start_date=NEW.start_date AND end_date=NEW.end_date AND status='Active') THEN RAISE(ABORT,'HOLIDAY_DUPLICATE') END); END;
+--> statement-breakpoint
+CREATE TRIGGER holiday_duplicate_update BEFORE UPDATE ON holidays WHEN NEW.status='Active' BEGIN SELECT (CASE WHEN EXISTS(SELECT 1 FROM holidays WHERE id<>NEW.id AND institution_id IS NEW.institution_id AND lower(trim(name))=lower(trim(NEW.name)) AND start_date=NEW.start_date AND end_date=NEW.end_date AND status='Active') THEN RAISE(ABORT,'HOLIDAY_DUPLICATE') END); END;

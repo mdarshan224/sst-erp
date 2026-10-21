@@ -93,6 +93,7 @@ import {
 } from "./context";
 import {
   Button,
+  Card,
   Field,
   FormDialog,
   Initials,
@@ -591,18 +592,46 @@ export default function CampusApp({ slug }: { slug: string }) {
   const route = pathname.split("/").filter(Boolean),
     current = route[0] || "";
   if (!current)
-    page = finance ? (
-      <Dashboard />
-    ) : can("reports.view") ? (
-      <Reports />
-    ) : can("students.view") ? (
-      <Students />
-    ) : (
-      <PageHead
-        title="Your institution"
-        description="Your account has no enabled modules. Ask your institution administrator to assign permissions."
-      />
-    );
+    page =
+      boot.user.role === "TEACHER" ? (
+        <>
+          <PageHead
+            title="Faculty workspace"
+            description={`Welcome, ${boot.user.name}. Manage your assigned classes and academic work.`}
+          />
+          <Card title="Teaching tools">
+            <div className="faculty-actions">
+              {[
+                ["attendance.view", "Attendance", "/attendance"],
+                ["timetable.view", "My timetable", "/timetable"],
+                ["exams.view", "Exams & results", "/exams"],
+                ["students.view", "Assigned students", "/students"],
+              ]
+                .filter(([permission]) => can(permission as Permission))
+                .map(([, label, path]) => (
+                  <Button
+                    key={path}
+                    variant="outline"
+                    onClick={() => router.push(basePath + path)}
+                  >
+                    {label}
+                  </Button>
+                ))}
+            </div>
+          </Card>
+        </>
+      ) : finance ? (
+        <Dashboard />
+      ) : can("reports.view") ? (
+        <Reports />
+      ) : can("students.view") ? (
+        <Students />
+      ) : (
+        <PageHead
+          title="Your institution"
+          description="Your account has no enabled modules. Ask your institution administrator to assign permissions."
+        />
+      );
   else if (current === "students")
     page = route[1] ? <StudentProfile id={route[1]} /> : <Students />;
   else if (current === "exams") page = <Exams />;
@@ -808,7 +837,11 @@ function CampusSidebar({
           )}
           <span>
             {boot.institution.name}
-            <small>INSTITUTION WORKSPACE</small>
+            <small>
+              {boot.user.role === "TEACHER"
+                ? "FACULTY WORKSPACE"
+                : "INSTITUTION WORKSPACE"}
+            </small>
           </span>
         </Link>
         <div className="institution-card">

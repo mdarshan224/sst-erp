@@ -74,7 +74,8 @@ export async function platformRoute(
       );
     permitPlatform(actor, required);
   }
-  if (path[0] === "settings" && path[1]) return websiteAdmin(actor, path, method, body, p);
+  if (path[0] === "settings" && path[1])
+    return websiteAdmin(actor, path, method, body, p);
   if (path[0] === "billing-gateways")
     return billingGatewaySettings(actor, method, body);
   if (path[0] === "billing-orders" && method === "GET") {
@@ -104,6 +105,8 @@ export async function platformRoute(
   if (path[0] === "organizations")
     return manageOrganizations(actor, path, method, body);
   if (path[0] === "holidays") {
+    if (method === "POST" && path[2] === "edit")
+      return saveHoliday(actor, body, true, path[1]);
     if (method === "GET") return holidayList(actor, p, true);
     if (method === "POST" && !path[1]) return saveHoliday(actor, body, true);
     if (method === "POST" && path[2] === "cancel")

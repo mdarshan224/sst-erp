@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { readFile, readdir } from "node:fs/promises";
-import { randomBytes, randomUUID } from "node:crypto";
+import { randomBytes, randomUUID, createHash } from "node:crypto";
 import { resolve } from "node:path";
 const require = createRequire(import.meta.url),
   { Miniflare } = createRequire(require.resolve("wrangler"))("miniflare");
@@ -25,6 +25,7 @@ const mf = new Miniflare({
     assert.equal(new URL(request.url).origin, "https://www.fast2sms.com");
     const body = await request.json();
     sentOtp = body.otp;
+    assert.equal(body.variables_values, "{otp}");
     assert.match(sentOtp, /^\d{6}$/);
     return Response.json({ return: true, status_code: 200 });
   },
@@ -325,6 +326,32 @@ try {
     };
   };
   let c = await otpChallenge("request");
+  const stored = await db
+    .prepare("SELECT otp_hash FROM institution_deletion_challenges WHERE id=?")
+    .bind(c.challengeId)
+    .first();
+  assert.equal(
+    stored.otp_hash,
+    createHash("sha256")
+      .update(c.challengeId + ":" + sentOtp)
+      .digest("hex"),
+  );
+  await req(base + "challenge", {
+    method: "POST",
+    body: { action: "request" },
+    status: 429,
+  });
+  const oldChallenge = c;
+  c = await otpChallenge("request");
+  await req(base + "request", {
+    method: "POST",
+    body: oldChallenge,
+    status: 403,
+  });
+  checks++;
+  console.log(
+    "PASS exact outgoing OTP hash, resend cooldown and stale challenge invalidation",
+  );
   await req(base + "request", {
     method: "POST",
     body: { ...c, institutionName: "Wrong name" },
@@ -355,7 +382,11 @@ try {
     .run();
   await req(base + "request", { method: "POST", body: c, status: 403 });
   c = await otpChallenge("request");
-  const deletion = await req(base + "request", { method: "POST", body: c });
+  const deletion = await req(base + "request", {
+    method: "POST",
+    body: c,
+    cookie: "analytics=changed-after-challenge",
+  });
   const replay = await req(base + "request", { method: "POST", body: c });
   assert.equal(replay.jobId, deletion.jobId);
   assert.equal(replay.replayed, true);

@@ -12,7 +12,14 @@ import {
   uuid,
   Row,
 } from "./db";
-import { Actor, ApiError, permitPlatform, rateLimit, sha256 } from "./security";
+import {
+  Actor,
+  ApiError,
+  permitPlatform,
+  rateLimit,
+  sha256,
+  constantEqual,
+} from "./security";
 import { platformAudit } from "./tenancy";
 import { sendSecurityOtp } from "./sms-auth";
 import { cloudflareHostname } from "./cloudflare-hostnames";
@@ -208,8 +215,15 @@ async function archive(job: Row, key: string, content: string) {
     );
 }
 async function sessionHash(actor: Actor) {
+  // Bind the authentication session, not analytics/UI/other-portal cookies.
+  const token = actor.request.headers
+    .get("cookie")
+    ?.split(";")
+    .map((v) => v.trim())
+    .find((v) => v.startsWith("__Host-sohan_session="))
+    ?.slice("__Host-sohan_session=".length);
   return sha256(
-    actor.userId + ":" + (actor.request.headers.get("cookie") || ""),
+    actor.userId + ":" + (token || "authenticated-platform-identity"),
   );
 }
 async function challenge(actor: Actor, id: string, action: string) {
@@ -283,6 +297,7 @@ async function challenge(actor: Actor, id: string, action: string) {
   return {
     challengeId,
     expiresAt: expires,
+    resendAt: new Date(Date.now() + 60000).toISOString(),
     mobile: "******" + mobile.mobile.slice(-4),
   };
 }
@@ -311,7 +326,7 @@ async function consume(
       "OTP_EXPIRED",
       "Security code expired, consumed or locked. Request a fresh code.",
     );
-  const valid = (await sha256(c.id + ":" + d.otp)) === c.otp_hash;
+  const valid = constantEqual(await sha256(c.id + ":" + d.otp), c.otp_hash);
   const updated = await stmt(
     "UPDATE institution_deletion_challenges SET attempts=attempts+1,consumed_at=CASE WHEN ?=1 THEN ? ELSE consumed_at END WHERE id=? AND consumed_at IS NULL AND attempts<5 AND expires_at>? AND attempts=? RETURNING id",
     [+valid, now(), c.id, now(), c.attempts],

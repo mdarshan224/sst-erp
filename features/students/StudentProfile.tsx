@@ -164,7 +164,7 @@ export function StudentProfile({
               <UserRound size={16} />
               Student details
             </Button>
-            {can("portal.manage") && <PortalManagement studentId={id} />}
+
             {s.parent_id && can("students.manage") && (
               <ParentAccess parentId={s.parent_id} />
             )}
@@ -762,6 +762,11 @@ export function StudentProfile({
             <SheetTitle>{s.name}</SheetTitle>
             <SheetDescription>Student and guardian details</SheetDescription>
           </SheetHeader>
+          {can("portal.manage") && (
+            <div className="p-4">
+              <PortalManagement studentId={id} />
+            </div>
+          )}
           <div className="sheet-body">
             <Suspense fallback={<Loading />}>
               <GuardianInfo student={s} />

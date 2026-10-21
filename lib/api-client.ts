@@ -5,6 +5,7 @@ export class ClientError extends Error {
     public code: string,
     public status: number,
     public requestId?: string,
+    public fields?: Record<string, string[]>,
   ) {
     super(message);
   }
@@ -39,16 +40,19 @@ export async function api<T = any>(
       ? pendingKeys.get(fingerprint) || crypto.randomUUID()
       : undefined);
   if (financial && key) pendingKeys.set(fingerprint, key);
+  const mutation =
+    options.method && !["GET", "HEAD", "OPTIONS"].includes(options.method);
+  const payload = options.body ?? (mutation ? {} : undefined);
   const response = await fetch("/api/" + path, {
     method: options.method || "GET",
     headers: {
       ...(key ? { "Idempotency-Key": key } : {}),
-      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(payload ? { "Content-Type": "application/json" } : {}),
       ...(options.institutionId
         ? { "X-Institution-ID": options.institutionId }
         : {}),
     },
-    body: options.body ? JSON.stringify(options.body) : undefined,
+    body: payload ? JSON.stringify(payload) : undefined,
     signal: options.signal,
     cache: "no-store",
   });
@@ -58,6 +62,7 @@ export async function api<T = any>(
     message?: string;
     errorCode?: string;
     requestId?: string;
+    fields?: Record<string, string[]>;
   };
   try {
     result = await response.json();
@@ -81,6 +86,7 @@ export async function api<T = any>(
       result.errorCode || "REQUEST_FAILED",
       response.status,
       result.requestId || response.headers.get("X-Request-ID") || undefined,
+      result.fields,
     );
   if (financial) pendingKeys.delete(fingerprint);
   return result.data;

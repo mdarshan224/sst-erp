@@ -18,6 +18,8 @@ export async function facilitiesRoute({
   requestId,
 }: RouteContext): Promise<Response | null> {
   if (path[0] === "holidays") {
+    if (method === "POST" && path[2] === "edit")
+      return ok(await saveHoliday(actor, body, false, path[1]), requestId);
     if (method === "GET") return ok(await holidayList(actor, p), requestId);
     if (method === "POST" && !path[1])
       return ok(await saveHoliday(actor, body), requestId);

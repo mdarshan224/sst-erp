@@ -11,6 +11,7 @@ import {
 import { useLocalDraft } from "@/hooks/use-local-draft";
 import { fieldErrors, structureFormSchema } from "@/lib/form-validation";
 import { Plus, Trash2 } from "lucide-react";
+import { feeSchedule } from "@/lib/fee-schedule";
 import { useState } from "react";
 import { toast } from "sonner";
 export function StructureForm({
@@ -28,7 +29,7 @@ export function StructureForm({
     [section, setSection] = useState(""),
     [frequency, setFrequency] = useState("Quarterly"),
     [items, setItems] = useState([{ componentId: "", amount: "" }]),
-    [dates, setDates] = useState(["2026-06-10", "2026-09-10", "2026-12-10"]);
+    [dates, setDates] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const form = { name, cls, stream, section, frequency, items, dates };
   const draft = useLocalDraft<typeof form>({
@@ -75,8 +76,9 @@ export function StructureForm({
         },
       ]);
       const year = boot.years.find((y: Row) => y.id === scope.year);
-      const start = year?.start_date || "2026-06-01";
-      setDates([start.slice(0, 8) + "10", shift(start, 3), shift(start, 6)]);
+      setDates(
+        year ? feeSchedule(year.start_date, year.end_date, "Quarterly") : [],
+      );
       setFrequency("Quarterly");
     },
   });
@@ -87,22 +89,15 @@ export function StructureForm({
     dates.some((d) => d && (d < year.start_date || d > year.end_date))
   )
     errors.dates = "Installments must be within the selected academic year";
-  const shift = (start: string, months: number) => {
-    const d = new Date(start + "T12:00:00Z");
-    d.setUTCMonth(d.getUTCMonth() + months);
-    d.setUTCDate(10);
-    return d.toISOString().slice(0, 10);
-  };
   const changeFrequency = (f: string) => {
     setFrequency(f);
-    const start =
-      boot.years.find((y: Row) => y.id === scope.year)?.start_date ||
-      "2026-06-01";
-    if (f === "Monthly")
-      setDates(Array.from({ length: 12 }, (_, i) => shift(start, i)));
-    else if (f === "Quarterly") setDates([0, 3, 6].map((i) => shift(start, i)));
-    else if (f === "Half-yearly") setDates([0, 6].map((i) => shift(start, i)));
-    else if (f === "Annual") setDates([shift(start, 0)]);
+    if (f === "Custom") return;
+    try {
+      setDates(year ? feeSchedule(year.start_date, year.end_date, f) : []);
+    } catch (e) {
+      setDates([]);
+      toast.error((e as Error).message);
+    }
   };
   return (
     <FormDialog

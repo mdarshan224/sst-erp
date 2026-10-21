@@ -4636,3 +4636,33 @@ textarea[data-slot] {
 
 /* Keyboard users receive the same clear row affordance as pointer users. */
 .clickable-row:focus-visible { outline: 2px solid var(--primary, #3348d8); outline-offset: -2px; }
+
+/* Targeted ERP workspace layout corrections; public marketing pages are untouched. */
+.platform-shell .page-head, .workspace-route .page-head {flex-wrap:wrap;align-items:flex-start;}
+.platform-shell .page-head > div:first-child, .workspace-route .page-head > div:first-child {flex:1 1 260px;min-width:0;overflow-wrap:anywhere;}
+.platform-shell .page-actions, .workspace-route .page-actions {flex:0 1 auto;max-width:100%;gap:10px;}
+.platform-shell .page-actions button, .workspace-route .page-actions button {min-height:36px;height:auto;white-space:normal;text-align:center;}
+.platform-shell .page-tabs, .workspace-route .page-tabs {display:flex;flex-wrap:wrap;height:auto !important;min-height:40px;gap:4px;max-width:100%;overflow:visible;}
+.platform-shell .page-tabs [data-slot="tabs-trigger"], .workspace-route .page-tabs [data-slot="tabs-trigger"] {flex:0 0 auto;min-height:36px;height:auto !important;}
+.platform-shell .status-actions, .faculty-actions {display:flex;flex-wrap:wrap;align-items:center;gap:12px;}
+.platform-shell .status-actions p {flex:1 1 280px;}
+.platform-shell .admin-access-list > div {display:grid;grid-template-columns:minmax(120px,1fr) minmax(180px,2fr) auto;align-items:start;}
+.platform-shell .admin-access-list :is(strong,span), .staff-directory .register-name {min-width:0;overflow-wrap:anywhere;white-space:normal;}
+.staff-directory .register-name {min-width:160px;max-width:320px;}
+.staff-directory .row-actions {display:flex;flex-wrap:wrap;gap:6px;min-width:180px;}
+.campus-dialog .form-field {min-width:0;}
+.campus-dialog .form-field[data-invalid="true"] :is(input,[role="combobox"]) {border-color:#b91c1c;}
+.campus-dialog .form-tabs {display:flex;flex-wrap:wrap;height:auto;gap:6px;}
+.campus-dialog .form-tabs [data-slot="tabs-trigger"] {min-height:36px;height:auto;white-space:normal;}
+.campus-dialog [role="tab"][aria-invalid="true"] {color:#b91c1c;}
+.campus-dialog .form-field small {white-space:normal;overflow-wrap:anywhere;}
+@media(max-width:640px){
+ .platform-shell .page-actions,.workspace-route .page-actions{width:100%;}
+ .platform-shell .page-actions>button,.workspace-route .page-actions>button{flex:1 1 140px;}
+ .platform-shell .admin-access-list>div{grid-template-columns:minmax(0,1fr);gap:6px;}
+ .faculty-actions>button{flex:1 1 150px;}
+}
+
+@media(max-width:767px){.platform-shell .page-head > div:first-child,.workspace-route .page-head > div:first-child{flex-basis:auto;}}
+.platform-shell .institution-tabs > [data-slot="tabs-list"] {display:flex;flex-wrap:wrap;width:100%;height:auto;overflow:visible;gap:6px;margin-top:16px;}
+.platform-shell .institution-tabs > [data-slot="tabs-list"] > [data-slot="tabs-trigger"] {flex:0 0 auto;min-height:36px;white-space:normal;}

@@ -1,5 +1,5 @@
 "use client";
-import { Row, useApp } from "@/components/campus/context";
+import { Row, useApp, useResource } from "@/components/campus/context";
 import {
   Field,
   FormDialog,
@@ -7,7 +7,7 @@ import {
   money,
   Picker,
 } from "@/components/campus/ui";
-import { useEffect, useState } from "react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
 export function AssignDialog({
   open,
@@ -19,28 +19,40 @@ export function AssignDialog({
   studentId: string;
 }) {
   const { request, query, refresh, can } = useApp(),
-    [structures, setStructures] = useState<Row[]>([]),
     [structureId, setStructure] = useState(""),
     [discount, setDiscount] = useState("0"),
     [scholarship, setScholarship] = useState("0"),
     [reason, setReason] = useState(""),
     [busy, setBusy] = useState(false);
-  useEffect(() => {
-    if (open)
-      request("structures?" + query({ size: "100" }))
-        .then((d) => setStructures(d.rows))
-        .catch((e) => toast.error(e.message));
-  }, [open, request, query]);
+  const [error, setError] = useState("");
+  const inFlight = useRef(false);
+  const list = useResource<Row>(
+    open ? "structures?" + query({ size: "100" }) : null,
+  );
+  const structures: Row[] = list.data?.rows || [];
+  const close = () => {
+    setStructure("");
+    setError("");
+    onClose();
+  };
   return (
     <FormDialog
       open={open}
-      onClose={onClose}
+      onClose={close}
       title="Assign fees & generate invoice"
       description="An invoice, installment schedule and permanent ledger entries are created together."
       busy={busy}
+      submitDisabled={busy || !structures.length}
       submitLabel="Assign & generate invoice"
       onSubmit={async (e) => {
         e.preventDefault();
+        if (inFlight.current) return;
+        if (!structureId) {
+          setError("Select a fee structure before assigning fees.");
+          return;
+        }
+        inFlight.current = true;
+        setError("");
         setBusy(true);
         try {
           await request("invoices", {
@@ -49,20 +61,28 @@ export function AssignDialog({
           });
           toast.success("Fee structure assigned. Invoice generated.");
           refresh();
-          onClose();
+          close();
         } catch (e) {
           toast.error((e as Error).message);
         } finally {
+          inFlight.current = false;
           setBusy(false);
         }
       }}
     >
-      <Field label="Fee structure" required>
+      <Field
+        label="Fee structure"
+        required
+        error={error || list.error || undefined}
+      >
         <Picker
           value={structureId}
-          onChange={setStructure}
+          onChange={(v) => {
+            setStructure(v);
+            setError("");
+          }}
           options={[
-            { value: "", label: "Choose applicable fee structure" },
+            { value: "", label: "Select a fee structure" },
             ...structures.map((r) => ({
               value: r.id,
               label: r.name + " · " + money(r.total_paise),

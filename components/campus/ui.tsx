@@ -53,7 +53,16 @@ import { money } from "@/lib/money";
 import { virtualTableOptions } from "@/lib/tabular";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Download, FileText, Inbox, Loader2, Search } from "lucide-react";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import {
+  ReactNode,
+  cloneElement,
+  isValidElement,
+  useId,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 import { AppContext, Row, useApp } from "./context";
 export { Button, Input, money };
@@ -64,6 +73,7 @@ export function Picker({
   placeholder,
   className = "",
   disabled = false,
+  ...aria
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -71,6 +81,8 @@ export function Picker({
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  "aria-invalid"?: boolean;
+  "aria-describedby"?: string;
 }) {
   return (
     <Select
@@ -78,7 +90,11 @@ export function Picker({
       onValueChange={(v) => onChange(v === "__all" ? "" : v)}
       disabled={disabled}
     >
-      <SelectTrigger className={"picker " + className} aria-label={placeholder}>
+      <SelectTrigger
+        {...aria}
+        className={"picker " + className}
+        aria-label={placeholder}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent position="popper">
@@ -489,6 +505,7 @@ export function FormDialog({
   wide = false,
   mobileDrawer = false,
   submitDisabled = false,
+  noValidate = false,
 }: {
   open: boolean;
   onClose: () => void;
@@ -501,6 +518,7 @@ export function FormDialog({
   wide?: boolean;
   mobileDrawer?: boolean;
   submitDisabled?: boolean;
+  noValidate?: boolean;
 }) {
   const mobile = useIsMobile();
   if (mobileDrawer && mobile)
@@ -518,7 +536,11 @@ export function FormDialog({
             </DrawerDescription>
           </DrawerHeader>
           {onSubmit ? (
-            <form onSubmit={onSubmit} className="flex min-h-0 flex-col">
+            <form
+              noValidate={noValidate}
+              onSubmit={onSubmit}
+              className="flex min-h-0 flex-col"
+            >
               <div className="overflow-y-auto px-5 pb-5">{children}</div>
               <DrawerFooter className="border-t bg-white pb-[max(16px,env(safe-area-inset-bottom))]">
                 <Button type="submit" disabled={busy || submitDisabled}>
@@ -542,7 +564,7 @@ export function FormDialog({
       </Drawer>
     );
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+    <Dialog open={open} onOpenChange={(v) => !v && !busy && onClose()}>
       <DialogContent className={"campus-dialog " + (wide ? "wide-dialog" : "")}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -551,10 +573,15 @@ export function FormDialog({
           </DialogDescription>
         </DialogHeader>
         {onSubmit ? (
-          <form onSubmit={onSubmit}>
+          <form noValidate={noValidate} onSubmit={onSubmit}>
             <div className="form-body">{children}</div>
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={onClose}>
+              <Button
+                variant="outline"
+                type="button"
+                disabled={busy}
+                onClick={onClose}
+              >
                 Cancel
               </Button>
               <Button type="submit" disabled={busy || submitDisabled}>
@@ -577,6 +604,7 @@ export function Field({
   error,
   required = false,
   className = "",
+  fieldName,
 }: {
   label: string;
   children: ReactNode;
@@ -584,17 +612,29 @@ export function Field({
   error?: string;
   required?: boolean;
   className?: string;
+  fieldName?: string;
 }) {
+  const errorId = useId();
+  const control = isValidElement(children)
+    ? cloneElement(children as React.ReactElement<Record<string, unknown>>, {
+        "aria-invalid": !!error,
+        "aria-describedby": error ? errorId : undefined,
+      })
+    : children;
   return (
-    <label className={"form-field " + className}>
+    <label
+      data-field={fieldName}
+      data-invalid={!!error}
+      className={"form-field " + className}
+    >
       <span>
         {label}
         {required && <b> *</b>}
       </span>
-      {children}
+      {control}
       {hint && <small>{hint}</small>}
       {error && (
-        <small className="text-red-600" role="alert">
+        <small id={errorId} className="text-red-600" role="alert">
           {error}
         </small>
       )}
