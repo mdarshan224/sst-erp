@@ -127,6 +127,13 @@
       "when": 1792570247879,
       "tag": "0017_workflow_guards",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1792730973238,
+      "tag": "0018_additional_workflow_guards",
+      "breakpoints": true
     }
   ]
 }

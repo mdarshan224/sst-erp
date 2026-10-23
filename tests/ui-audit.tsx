@@ -186,4 +186,27 @@ function Harness() {
     </>
   );
 }
+// Optional invalid legacy draft proves validation runs on restored values too.
+if (new URLSearchParams(location.search).has("future-dob"))
+  localStorage.setItem(
+    "sohan:draft:v1:staff:ui-school:year:student",
+    JSON.stringify({
+      version: 1,
+      savedAt: Date.now(),
+      value: {
+        name: "Fixture student",
+        admissionNumber: "QA-DOB",
+        sectionId: "section",
+        gender: "Not specified",
+        parentName: "Fixture guardian",
+        mobile: "9876543210",
+        email: "",
+        dob: "2050-01-01",
+        rollNumber: "",
+        bloodGroup: "",
+        aadhaarLast4: "",
+        previousSchool: "",
+      },
+    }),
+  );
 createRoot(document.getElementById("root")!).render(<Harness />);

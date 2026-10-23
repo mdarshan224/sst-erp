@@ -5,6 +5,7 @@ import {
   integer,
   index,
   uniqueIndex,
+  primaryKey,
 } from "drizzle-orm/sqlite-core";
 // INR is stored as integer paise, with financial constraints in migrations.
 const id = () => text("id").primaryKey();
@@ -1813,4 +1814,19 @@ export const portalServiceRequests = sqliteTable(
       t.academicYearId,
     ),
   ],
+);
+
+export const teachingStaff = sqliteTable(
+  "teaching_staff",
+  {
+    institutionId: text("institution_id")
+      .notNull()
+      .references(() => institutions.id),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    createdBy: text("created_by").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.institutionId, t.userId] })],
 );

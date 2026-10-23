@@ -13,7 +13,7 @@ import {
   stmt,
   uuid,
 } from "./db";
-import { Actor, ApiError, audit, own, permit } from "./security";
+import { Actor, ApiError, audit, own, permit, hasPermission } from "./security";
 import {
   clock,
   generateTimetable,
@@ -87,6 +87,12 @@ export async function teachingSetup(
   );
   return {
     assignments,
+    teachingStaff: hasPermission(actor, "users.manage")
+      ? await all(
+          "SELECT m.user_id id,COALESCE(NULLIF(m.display_name,''),u.name) name,EXISTS(SELECT 1 FROM teaching_staff f WHERE f.institution_id=m.institution_id AND f.user_id=m.user_id) eligible FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.institution_id=? AND m.active=1 AND m.role NOT IN ('TEACHER','SUPER_ADMIN','PARENT','STUDENT') ORDER BY name",
+          [actor.institutionId],
+        )
+      : [],
     subjects: await all(
       "SELECT id,name,code FROM teaching_subjects WHERE institution_id=? ORDER BY name LIMIT 500",
       [actor.institutionId],
@@ -95,7 +101,7 @@ export async function teachingSetup(
       actor.role === "TEACHER"
         ? []
         : await all(
-            "SELECT m.user_id id,COALESCE(NULLIF(m.display_name,''),u.name) name FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.institution_id=? AND m.active=1 AND m.role='TEACHER' ORDER BY u.name LIMIT 500",
+            "SELECT m.user_id id,COALESCE(NULLIF(m.display_name,''),u.name) name FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.institution_id=? AND m.active=1 AND (m.role='TEACHER' OR (m.role NOT IN ('SUPER_ADMIN','PARENT','STUDENT') AND EXISTS(SELECT 1 FROM teaching_staff f WHERE f.institution_id=m.institution_id AND f.user_id=m.user_id))) ORDER BY u.name LIMIT 500",
             [actor.institutionId],
           ),
     sections: await all(
@@ -151,7 +157,7 @@ export async function addTeachingAssignment(actor: Actor, input: unknown) {
   await own(actor, "teaching_subjects", d.subjectId);
   if (
     !(await one(
-      "SELECT id FROM memberships WHERE institution_id=? AND user_id=? AND role='TEACHER' AND active=1",
+      "SELECT m.id FROM memberships m WHERE institution_id=? AND user_id=? AND active=1 AND (role='TEACHER' OR (role NOT IN ('SUPER_ADMIN','PARENT','STUDENT') AND EXISTS(SELECT 1 FROM teaching_staff f WHERE f.institution_id=m.institution_id AND f.user_id=m.user_id)))",
       [actor.institutionId, d.teacherId],
     ))
   )
@@ -170,7 +176,7 @@ export async function addTeachingAssignment(actor: Actor, input: unknown) {
       subject_id: d.subjectId,
       teacher_id: d.teacherId,
       periods_per_week: d.periods,
-      room: d.room.toLowerCase(),
+      room: d.room.trim(),
       ...stamps(actor.userId),
     }),
     audit(
@@ -348,7 +354,7 @@ export async function saveDraft(actor: Actor, id: string, input: unknown) {
         );
       return {
         ...s,
-        room: s.room.toLowerCase(),
+        room: s.room.trim(),
         teacherId: a.teacher_id,
         sectionId: a.section_id,
         start: minute(s.start),
@@ -432,7 +438,7 @@ export async function publishTimetable(
       detail.slots.filter((s) => s.assignment_id === a.id).length !==
         a.periods_per_week ||
       !(await one(
-        "SELECT id FROM memberships WHERE institution_id=? AND user_id=? AND active=1 AND role='TEACHER'",
+        "SELECT m.id FROM memberships m WHERE institution_id=? AND user_id=? AND active=1 AND (role='TEACHER' OR (role NOT IN ('SUPER_ADMIN','PARENT','STUDENT') AND EXISTS(SELECT 1 FROM teaching_staff f WHERE f.institution_id=m.institution_id AND f.user_id=m.user_id)))",
         [actor.institutionId, a.teacher_id],
       ))
     )
@@ -492,4 +498,41 @@ export async function studentPublishedTimetable(
     "SELECT x.weekday,x.start_minute,x.end_minute,x.room,s.name subject_name,u.name teacher_name,t.published_at FROM timetable_slots x JOIN timetables t ON t.id=x.timetable_id AND t.institution_id=x.institution_id JOIN teaching_assignments a ON a.id=x.assignment_id AND a.institution_id=x.institution_id JOIN teaching_subjects s ON s.id=a.subject_id JOIN users u ON u.id=a.teacher_id WHERE x.institution_id=? AND t.academic_year_id=? AND t.status='Published' AND a.section_id=? ORDER BY x.weekday,x.start_minute LIMIT 100",
     [actor.institutionId, yearId, enrollment.section_id],
   );
+}
+
+export async function setTeachingEligibility(actor: Actor, input: unknown) {
+  permit(actor, "users.manage");
+  const d = z
+    .object({ userId: z.string().min(1), eligible: z.boolean() })
+    .parse(input);
+  const member = await one(
+    "SELECT id FROM memberships WHERE institution_id=? AND user_id=? AND active=1 AND role NOT IN ('SUPER_ADMIN','PARENT','STUDENT')",
+    [actor.institutionId, d.userId],
+  );
+  if (!member)
+    throw new ApiError(
+      422,
+      "TEACHER_REQUIRED",
+      "Choose active staff from this institution.",
+    );
+  await batch([
+    d.eligible
+      ? stmt(
+          "INSERT OR IGNORE INTO teaching_staff(institution_id,user_id,created_by,created_at) VALUES(?,?,?,?)",
+          [actor.institutionId, d.userId, actor.userId, now()],
+        )
+      : stmt(
+          "DELETE FROM teaching_staff WHERE institution_id=? AND user_id=?",
+          [actor.institutionId, d.userId],
+        ),
+    audit(
+      actor,
+      "Updated teaching eligibility",
+      "memberships",
+      member.id,
+      null,
+      d,
+    ),
+  ]);
+  return { saved: true };
 }

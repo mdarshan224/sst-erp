@@ -1,4 +1,5 @@
 "use client";
+import { InstitutionLogo } from "./InstitutionLogo";
 import { AppLink as Link } from "@/lib/browser-navigation";
 import { platformLogo, platformColor, brandTheme } from "@/lib/branding";
 import { SmsLogin, SignOut } from "./SmsLogin";
@@ -79,7 +80,7 @@ export function Access({
       </div>
       <div className="login-card">
         {logo ? (
-          <img className="portal-logo" src={logo} alt={name + " logo"} />
+          <InstitutionLogo className="portal-logo" src={logo} name={name} />
         ) : (
           <span className="login-icon">
             <Building2 size={30} />

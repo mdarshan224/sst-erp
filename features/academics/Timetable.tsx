@@ -130,7 +130,8 @@ function TeachingSetup({
   action: (p: string, b: unknown) => Promise<Row | null>;
   busy: boolean;
 }) {
-  const { scope } = useApp(),
+  const { scope, can } = useApp(),
+    [staff, setStaff] = useState(""),
     [subject, setSubject] = useState({ name: "", code: "" }),
     [a, setA] = useState({
       sectionId: "",
@@ -145,6 +146,50 @@ function TeachingSetup({
         Subjects & teaching assignments{" "}
         <span>{data.assignments.length} assignments</span>
       </summary>
+      {can("users.manage") && (
+        <Card title="Teaching eligibility">
+          <p>
+            Explicitly enable teaching for staff who also hold another role.
+            This applies across this institution’s campuses and does not change
+            their access permissions.
+          </p>
+          <Field label="Staff member">
+            <Picker
+              value={staff}
+              onChange={setStaff}
+              options={(data.teachingStaff || []).map((s: Row) => ({
+                value: s.id,
+                label: s.name + (s.eligible ? " · Teaching enabled" : ""),
+              }))}
+            />
+          </Field>
+          <div className="row-actions">
+            <Button
+              disabled={busy || !staff}
+              onClick={() =>
+                action("teaching/eligibility", {
+                  userId: staff,
+                  eligible: true,
+                })
+              }
+            >
+              Enable teaching
+            </Button>
+            <Button
+              variant="outline"
+              disabled={busy || !staff}
+              onClick={() =>
+                action("teaching/eligibility", {
+                  userId: staff,
+                  eligible: false,
+                })
+              }
+            >
+              Remove teaching eligibility
+            </Button>
+          </div>
+        </Card>
+      )}
       <div className="grid gap-5 lg:grid-cols-2">
         <Card title="Add subject">
           <form
@@ -246,12 +291,20 @@ function TeachingSetup({
             </div>
             {!data.teachers.length && (
               <p className="schedule-help">
-                Add a Teacher in Users & Roles first.
+                No eligible teaching staff. Add a Teacher in Users & Roles or
+                ask an authorized administrator to enable teaching eligibility
+                above.
               </p>
             )}
             <Button
               type="submit"
-              disabled={busy || !a.teacherId || !a.subjectId || !a.sectionId}
+              disabled={
+                busy ||
+                !data.teachers.some((t: Row) => t.id === a.teacherId) ||
+                !a.subjectId ||
+                !a.sectionId ||
+                !a.room.trim()
+              }
             >
               Add assignment
             </Button>

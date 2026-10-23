@@ -1,3 +1,4 @@
+import { localToday, DOB_FUTURE } from "./local-date";
 import { z } from "zod";
 import { parseMoney } from "./money";
 export const realDate = z
@@ -9,25 +10,27 @@ export const realDate = z
     "Enter a real calendar date",
   );
 const text = z.string().trim().min(1, "This field is required").max(160);
-export const studentFormSchema = z.object({
-  name: text,
-  admissionNumber: text,
-  sectionId: z.string().min(1, "Choose a class and section"),
-  parentName: text,
-  mobile: z
-    .string()
-    .regex(/^[6-9]\d{9}$/, "Enter a 10-digit Indian mobile number"),
-  email: z.string().email("Enter a valid email").or(z.literal("")),
-  dob: realDate.or(z.literal("")),
-  gender: z.enum(["Male", "Female", "Other", "Not specified"]),
-  aadhaarLast4: z
-    .string()
-    .regex(/^\d{4}$/, "Enter exactly 4 digits")
-    .or(z.literal("")),
-  rollNumber: z.string().max(30),
-  bloodGroup: z.string().max(5),
-  previousSchool: z.string().max(160),
-});
+export const studentSchemaForToday = (today: string) =>
+  z.object({
+    name: text,
+    admissionNumber: text,
+    sectionId: z.string().min(1, "Choose a class and section"),
+    parentName: text,
+    mobile: z
+      .string()
+      .regex(/^[6-9]\d{9}$/, "Enter a 10-digit Indian mobile number"),
+    email: z.string().email("Enter a valid email").or(z.literal("")),
+    dob: realDate.or(z.literal("")).refine((v) => !v || v <= today, DOB_FUTURE),
+    gender: z.enum(["Male", "Female", "Other", "Not specified"]),
+    aadhaarLast4: z
+      .string()
+      .regex(/^\d{4}$/, "Enter exactly 4 digits")
+      .or(z.literal("")),
+    rollNumber: z.string().max(30),
+    bloodGroup: z.string().max(5),
+    previousSchool: z.string().max(160),
+  });
+export const studentFormSchema = studentSchemaForToday(localToday());
 const amount = z.string().refine((v) => {
   try {
     return parseMoney(v) > 0;
@@ -60,6 +63,16 @@ export const structureFormSchema = z
     dates: z.array(realDate).min(1).max(12),
   })
   .superRefine((d, ctx) => {
+    const dates = new Set<string>();
+    d.dates.forEach((date, i) => {
+      if (dates.has(date))
+        ctx.addIssue({
+          code: "custom",
+          path: ["dates", i],
+          message: "Installment dates must be unique.",
+        });
+      dates.add(date);
+    });
     const ids = new Set<string>();
     d.items.forEach((item, i) => {
       if (ids.has(item.componentId))

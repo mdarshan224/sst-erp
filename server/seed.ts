@@ -379,7 +379,12 @@ async function seedInstitution(user: {
         class_id: c.id,
         campus_id: campusId,
         stream_id: stream,
-        name: i >= 13 ? "A" : i % 3 === 1 ? "B" : "A",
+        name:
+          i >= 13
+            ? "A · " + (stream === science ? "Science" : "Commerce")
+            : i % 3 === 1
+              ? "B"
+              : "A",
         capacity: 40,
       };
       statements.push(insert("sections", section));

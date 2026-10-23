@@ -1,3 +1,5 @@
+import { institutionToday } from "./local-date";
+import { ATTENDANCE_FUTURE } from "../lib/local-date";
 import { holidaysOn } from "./holidays";
 import { z } from "zod";
 import { all, batch, now, one, stamps, stmt, uuid } from "./db";
@@ -67,6 +69,8 @@ export async function saveAttendance(actor: Actor, input: unknown) {
         .max(100),
     })
     .parse(input);
+  if (d.date > (await institutionToday(actor.institutionId)))
+    throw new ApiError(422, "ATTENDANCE_FUTURE", ATTENDANCE_FUTURE);
   const year = await attendanceScope(actor, d.yearId, d.sectionId, d.date);
   if (["Closed", "Archived"].includes(year.status))
     throw new ApiError(

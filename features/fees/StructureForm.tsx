@@ -1,4 +1,10 @@
 "use client";
+import {
+  addInstallment,
+  changeInstallment,
+  removeInstallment,
+  moveInstallment,
+} from "@/lib/installment-dates";
 import { Row, useApp } from "@/components/campus/context";
 import { DraftNotice } from "@/components/campus/DraftNotice";
 import {
@@ -289,23 +295,49 @@ export function StructureForm({
       </div>
       <div className="installment-date-grid">
         {dates.map((date, i) => (
-          <Field key={i} label={"Installment " + (i + 1)}>
+          <Field
+            key={i}
+            label={"Installment " + (i + 1)}
+            error={submitted ? errors["dates." + i] : undefined}
+          >
             <div className="date-remove">
               <Input
                 required
                 type="date"
                 value={date}
                 onChange={(e) =>
-                  setDates(dates.map((r, j) => (j === i ? e.target.value : r)))
+                  setDates(changeInstallment(dates, i, e.target.value))
                 }
               />
+              {frequency === "Custom" && (
+                <>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={i === 0}
+                    aria-label={"Move installment " + (i + 1) + " up"}
+                    onClick={() => setDates(moveInstallment(dates, i, -1))}
+                  >
+                    ↑
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={i === dates.length - 1}
+                    aria-label={"Move installment " + (i + 1) + " down"}
+                    onClick={() => setDates(moveInstallment(dates, i, 1))}
+                  >
+                    ↓
+                  </Button>
+                </>
+              )}
               {frequency === "Custom" && dates.length > 1 && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
                   aria-label="Remove installment"
-                  onClick={() => setDates(dates.filter((_, j) => j !== i))}
+                  onClick={() => setDates(removeInstallment(dates, i))}
                 >
                   <Trash2 size={14} />
                 </Button>
@@ -318,7 +350,7 @@ export function StructureForm({
         <Button
           variant="outline"
           type="button"
-          onClick={() => setDates([...dates, dates[dates.length - 1]])}
+          onClick={() => setDates(addInstallment(dates))}
         >
           <Plus size={15} />
           Add installment

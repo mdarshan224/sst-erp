@@ -190,8 +190,8 @@ export async function checkCapacity(
 }
 export async function portalInfo(slug: string) {
   const i = await one(
-    "SELECT id,name,slug,logo_key,institution_type,settings,status FROM institutions WHERE (slug=? OR id=?) AND status NOT IN ('Deleting','Deleted')",
-    [slug, slug],
+    "SELECT id,name,slug,logo_key,institution_type,settings,status FROM institutions WHERE (lower(slug)=? OR id=?) AND status NOT IN ('Deleting','Deleted')",
+    [slug.toLowerCase(), slug],
   );
   if (!i) throw new ApiError(404, "NOT_FOUND", "Institution portal not found.");
   return {

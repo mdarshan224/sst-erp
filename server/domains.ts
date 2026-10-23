@@ -1,3 +1,5 @@
+import { env } from "cloudflare:workers";
+import { portalBase } from "../lib/portal-url";
 import { z } from "zod";
 import { batch, now, one, stmt, uuid } from "./db";
 import { Actor, ApiError, permit } from "./security";
@@ -9,7 +11,8 @@ import {
   hostnameRecords,
 } from "./cloudflare-hostnames";
 import { platformAudit } from "./tenancy";
-export const portalOrigin = (request: Request) => "https://erp.sohansoft.in";
+export const portalOrigin = (request: Request) =>
+  portalBase(request.url, env.PLATFORM_ORIGIN, env.PORTAL_PUBLIC_URL);
 export async function domainInfo(id: string, request: Request) {
   const i = await one("SELECT id,slug FROM institutions WHERE id=?", [id]);
   if (!i) throw new ApiError(404, "NOT_FOUND", "Institution not found.");

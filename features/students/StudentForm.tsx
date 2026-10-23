@@ -1,10 +1,11 @@
 "use client";
+import { localToday, institutionTimezone } from "@/lib/local-date";
 import { Row, useApp } from "@/components/campus/context";
 import { DraftNotice } from "@/components/campus/DraftNotice";
 import { Field, FormDialog, Input, Picker } from "@/components/campus/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLocalDraft } from "@/hooks/use-local-draft";
-import { fieldErrors, studentFormSchema } from "@/lib/form-validation";
+import { fieldErrors, studentSchemaForToday } from "@/lib/form-validation";
 import { ClientError } from "@/lib/api-client";
 import { studentFieldTab } from "@/lib/student-form-tabs";
 import { useEffect, useRef, useState } from "react";
@@ -103,7 +104,9 @@ export function StudentForm({
       });
     },
   });
-  const errors = { ...fieldErrors(studentFormSchema, d), ...serverErrors };
+  const today = localToday(institutionTimezone(boot.institution.settings));
+  const studentSchema = studentSchemaForToday(today);
+  const errors = { ...fieldErrors(studentSchema, d), ...serverErrors };
   const error = (key: string) =>
     submitted || d[key] ? errors[key] : undefined;
   if (credentials)
@@ -157,7 +160,7 @@ export function StudentForm({
       onSubmit={async (e) => {
         e.preventDefault();
         setSubmitted(true);
-        const valid = studentFormSchema.safeParse(d);
+        const valid = studentSchema.safeParse(d);
         if (!valid.success) {
           reveal(valid.error.issues[0].path[0] as string);
           toast.error("Check the highlighted fields.");
@@ -302,7 +305,12 @@ export function StudentForm({
                 />
               </Field>
               <Field label="Date of birth" fieldName="dob" error={error("dob")}>
-                <Input type="date" value={d.dob} onChange={set("dob")} />
+                <Input
+                  type="date"
+                  max={today}
+                  value={d.dob}
+                  onChange={set("dob")}
+                />
               </Field>
               <Field label="Gender">
                 <Picker

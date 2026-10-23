@@ -1,4 +1,5 @@
 "use client";
+import { InstitutionLogo } from "@/components/campus/InstitutionLogo";
 import { InstitutionDeletion } from "./Governance";
 import type { Row } from "@/components/campus/context";
 import {
@@ -196,12 +197,9 @@ export function InstitutionDetail({ id }: { id: string }) {
             </Card>
             <Card title="Branding & institution access">
               <div className="branding-preview">
-                <img
-                  src={"/api/portal/" + i.slug + "/logo"}
-                  alt={i.name + " logo"}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
+                <InstitutionLogo
+                  src={i.logo_key ? "/api/portal/" + i.slug + "/logo" : null}
+                  name={i.name}
                 />
                 <span
                   className="branding-swatch"

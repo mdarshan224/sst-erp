@@ -25,6 +25,20 @@ export async function dispatch(request: Request): Promise<Response> {
         .filter(Boolean),
       p = url.searchParams,
       method = request.method;
+    const referenceIndex = ["campus", "portal"].includes(path[0])
+      ? 1
+      : path[0] === "platform" && path[1] === "institutions"
+        ? 2
+        : -1;
+    if (referenceIndex >= 0 && path[referenceIndex]) {
+      try {
+        path[referenceIndex] = decodeURIComponent(path[referenceIndex]);
+      } catch {
+        throw new ApiError(404, "NOT_FOUND", "Institution not found.");
+      }
+      if (!/^[a-zA-Z0-9_-]{1,160}$/.test(path[referenceIndex]))
+        throw new ApiError(404, "NOT_FOUND", "Institution not found.");
+    }
     const host = await bindHost(request, path);
     request = host.request;
     const authResponse = await smsAuthRoute(request, path, requestId);

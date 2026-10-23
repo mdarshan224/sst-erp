@@ -213,7 +213,7 @@ export async function createInstitution(actor: Actor, input: unknown) {
             class_id: classId,
             campus_id: campusId,
             stream_id: stream?.id || null,
-            name: "A",
+            name: stream ? "A · " + stream.name : "A",
           }),
         );
     });

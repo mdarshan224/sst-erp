@@ -1,4 +1,5 @@
 "use client";
+import { sectionName, SECTION_DUPLICATE } from "@/lib/section-name";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -88,6 +89,19 @@ export function CatalogDialog({
       wide={["parents", "benefits", "sections"].includes(kind)}
       onSubmit={async (e) => {
         e.preventDefault();
+        if (
+          kind === "sections" &&
+          boot.sections.some(
+            (r: Row) =>
+              r.academic_year_id === d.yearId &&
+              r.class_id === d.classId &&
+              r.campus_id === d.campusId &&
+              sectionName(r.name) === sectionName(d.name || ""),
+          )
+        ) {
+          toast.error(SECTION_DUPLICATE);
+          return;
+        }
         setBusy(true);
         try {
           const fields: Record<string, string[]> = {

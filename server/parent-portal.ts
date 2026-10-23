@@ -1,3 +1,4 @@
+import { portalBase } from "../lib/portal-url";
 import { today } from "./db";
 import { holidaysOn } from "./holidays";
 import { studentPublishedTimetable } from "./timetable";
@@ -74,9 +75,10 @@ export async function issueParentGrant(
     token,
     expiresAt,
     url:
-      (env.PLATFORM_ORIGIN || new URL(actor.request.url).origin).replace(
-        /\/$/,
-        "",
+      portalBase(
+        actor.request.url,
+        env.PLATFORM_ORIGIN,
+        env.PORTAL_PUBLIC_URL,
       ) +
       "/portal/" +
       token,

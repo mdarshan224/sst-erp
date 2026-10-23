@@ -1,3 +1,6 @@
+import { sectionName, SECTION_DUPLICATE } from "../lib/section-name";
+import { institutionToday } from "./local-date";
+import { DOB_FUTURE } from "../lib/local-date";
 import { newPortalAccount } from "./portal-credentials";
 import { z } from "zod";
 import { parseMoney } from "../lib/money";
@@ -59,7 +62,15 @@ export async function createStudent(
 ) {
   permit(actor, "students.manage");
   await checkCapacity(actor, "students");
-  const d = studentSchema.parse(input),
+  const todayLocal = await institutionToday(actor.institutionId);
+  const d = studentSchema
+      .extend({
+        dob: dateField
+          .optional()
+          .or(z.literal(""))
+          .refine((v) => !v || v <= todayLocal, DOB_FUTURE),
+      })
+      .parse(input),
     year = await own(actor, "academic_years", d.yearId),
     section = await own(actor, "sections", d.sectionId, d.yearId);
   if (["Closed", "Archived"].includes(year.status))
@@ -236,6 +247,19 @@ export async function createCatalog(
       await own(actor, "classes", d.classId);
       await own(actor, "campuses", d.campusId);
       if (d.streamId) await own(actor, "streams", d.streamId);
+      if (
+        await one(
+          "SELECT id FROM section_name_keys WHERE institution_id=? AND academic_year_id=? AND class_id=? AND campus_id=? AND name_key=?",
+          [
+            actor.institutionId,
+            d.yearId,
+            d.classId,
+            d.campusId,
+            sectionName(d.name),
+          ],
+        )
+      )
+        throw new ApiError(409, "SECTION_DUPLICATE", SECTION_DUPLICATE);
       table = "sections";
       record = {
         ...base,

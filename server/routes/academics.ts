@@ -1,5 +1,6 @@
 import { ok, RouteContext } from "./shared";
 import {
+  setTeachingEligibility,
   addTeachingAssignment,
   addTeachingSubject,
   generateDraft,
@@ -18,6 +19,8 @@ export async function academicsRoute({
   p,
   requestId,
 }: RouteContext): Promise<Response | null> {
+  if (path.join("/") === "teaching/eligibility" && method === "POST")
+    return ok(await setTeachingEligibility(actor, body), requestId);
   if (path[0] === "teaching" && method === "GET")
     return ok(await teachingSetup(actor, p.get("year") || ""), requestId);
   if (path.join("/") === "teaching/subjects" && method === "POST")

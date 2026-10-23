@@ -186,7 +186,12 @@ export function errorResponse(error: unknown, requestId: string): Response {
       .join("; ");
     fields = error.flatten().fieldErrors;
   } else if (error instanceof Error) {
-    if (/OTP_COOLDOWN/.test(error.message)) {
+    if (/SECTION_DUPLICATE/.test(error.message)) {
+      status = 409;
+      code = "SECTION_DUPLICATE";
+      message =
+        "This section already exists for the selected class and campus.";
+    } else if (/OTP_COOLDOWN/.test(error.message)) {
       status = 429;
       code = "OTP_COOLDOWN";
       message = "Wait one minute before requesting another security code.";

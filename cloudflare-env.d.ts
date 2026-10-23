@@ -15,6 +15,7 @@ declare namespace Cloudflare {
     JOB_SECRET?: string;
     PLATFORM_OWNER_EMAIL?: string;
     PLATFORM_ORIGIN?: string;
+    PORTAL_PUBLIC_URL?: string;
     CLOUDFLARE_API_TOKEN?: string;
     CLOUDFLARE_ZONE_ID?: string;
     CONNECTORS?: any;

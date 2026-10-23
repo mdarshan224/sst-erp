@@ -1,4 +1,9 @@
 "use client";
+import {
+  localToday,
+  institutionTimezone,
+  ATTENDANCE_FUTURE,
+} from "@/lib/local-date";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Save } from "lucide-react";
@@ -14,17 +19,13 @@ import {
   Picker,
 } from "@/components/campus/ui";
 export default function Attendance() {
-  const { scope, request, refresh, can } = useApp(),
+  const { boot, scope, request, refresh, can } = useApp(),
     setup = useResource<Row>(`attendance/setup?year=${scope.year}`),
     [section, setSection] = useState(""),
     [date, setDate] = useState(() =>
-      new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(new Date()),
+      localToday(institutionTimezone(boot.institution.settings)),
     );
+  const today = localToday(institutionTimezone(boot.institution.settings));
   useEffect(() => {
     setSection("");
   }, [scope.year]);
@@ -47,9 +48,13 @@ export default function Attendance() {
               }))}
             />
           </Field>
-          <Field label="Date">
+          <Field
+            label="Date"
+            error={date > today ? ATTENDANCE_FUTURE : undefined}
+          >
             <Input
               type="date"
+              max={today}
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
@@ -58,6 +63,8 @@ export default function Attendance() {
       </Card>
       {setup.error ? (
         <Failure message={setup.error} retry={setup.retry} />
+      ) : date > today ? (
+        <p role="alert">{ATTENDANCE_FUTURE}</p>
       ) : !section ? (
         <Empty title="Choose your assigned section" />
       ) : (

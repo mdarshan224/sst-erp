@@ -1,4 +1,5 @@
 "use client";
+import { InstitutionLogo } from "./InstitutionLogo";
 import { platformLogo, platformColor, brandTheme } from "@/lib/branding";
 import { SignOut } from "./SmsLogin";
 import {
@@ -821,10 +822,10 @@ function CampusSidebar({
       <SidebarHeader className="campus-sidebar-header">
         <Link href="/" className="brand">
           {boot.institution.logo_key ? (
-            <img
+            <InstitutionLogo
               className="brand-logo"
               src={"/api/portal/" + boot.institution.slug + "/logo"}
-              alt={boot.institution.name + " logo"}
+              name={boot.institution.name}
             />
           ) : (
             <span className="school-monogram">
@@ -846,10 +847,10 @@ function CampusSidebar({
         </Link>
         <div className="institution-card">
           {boot.institution.logo_key ? (
-            <img
+            <InstitutionLogo
               className="school-monogram"
               src={"/api/portal/" + boot.institution.slug + "/logo"}
-              alt={boot.institution.name + " logo"}
+              name={boot.institution.name}
             />
           ) : (
             <span className="school-monogram">

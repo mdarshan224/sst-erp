@@ -76,6 +76,16 @@ export async function platformRoute(
   }
   if (path[0] === "settings" && path[1])
     return websiteAdmin(actor, path, method, body, p);
+  if (path[0] === "institutions" && path[1]) {
+    const institution = await one(
+      "SELECT id FROM institutions WHERE id=? OR lower(slug)=?",
+      [path[1], path[1].toLowerCase()],
+    );
+    if (!institution)
+      throw new ApiError(404, "NOT_FOUND", "Institution not found.");
+    path = [...path];
+    path[1] = institution.id;
+  }
   if (path[0] === "billing-gateways")
     return billingGatewaySettings(actor, method, body);
   if (path[0] === "billing-orders" && method === "GET") {
